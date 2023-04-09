@@ -9,13 +9,11 @@ public class Trailer extends Transport {
         this.height = height;
         this.width = width;
     }
-
-    public static Trailer getFilled(TrailerWindowController controller) {
-        Trailer trailer = (Trailer) Transport.getFilled(controller);
-        trailer.trailerType = controller.trailerConnectionTextField.getText();
-        trailer.height = Integer.parseInt(controller.trailerHeightField.getText());
-        trailer.width = Integer.parseInt(controller.trailerWidthField.getText());
-        return trailer;
+    public Trailer(TrailerWindowController controller){
+        super(controller);
+        this.trailerType = controller.trailerConnectionTextField.getText();
+        this.height = Integer.parseInt(controller.trailerHeightField.getText());
+        this.width = Integer.parseInt(controller.trailerWidthField.getText());
     }
 
     public static boolean checkFields(TrailerWindowController controller){

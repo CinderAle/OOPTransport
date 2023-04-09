@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -19,17 +20,25 @@ public class EngineWindowController {
     public Button engineCancelButton;
     public Button engineAddButton;
 
-    public boolean isAdded;
+    public Engine engine = null;
 
     public void closeEngineWindow(MouseEvent mouseEvent) {
         Stage stage = (Stage)this.engineCancelButton.getScene().getWindow();
-        this.isAdded = false;
+        engine = null;
         stage.close();
     }
 
     public void addEngine(ActionEvent actionEvent) {
         Stage stage = (Stage)this.engineCancelButton.getScene().getWindow();
-        this.isAdded = true;
-        stage.close();
+        if(Engine.checkFields(this)) {
+            engine = Engine.getFilled(this);
+            stage.close();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Not enough data");
+            alert.setContentText("Not all of the fields were set or were set wrongly!");
+            alert.showAndWait();
+        }
     }
 }

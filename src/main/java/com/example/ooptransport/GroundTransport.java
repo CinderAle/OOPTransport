@@ -41,19 +41,18 @@ public class GroundTransport extends Transport {
         this.leftSided = true;
     }
 
-    public static GroundTransport getFilled(Controller controller) {
-        GroundTransport transport = (GroundTransport) Transport.getFilled(controller);
-        transport.wheels = Integer.parseInt(controller.groundWheelsTextField.getText());
-        transport.highwayConsumption = Double.parseDouble(controller.groundHighwayTextField.getText());
-        transport.cityConsumption = Double.parseDouble(controller.groundCityTextField.getText());
-        transport.gears = Integer.parseInt(controller.groundGearsTextField.getText());
-        transport.wheelDrive = controller.groundWheelDriveComboBox.getValue();
-        transport.gearboxType = controller.groundGearboxComboBox.getValue();
-        transport.gearboxManufacturer = controller.groundGearboxManTextField.getText();
-        transport.soundSystem = controller.groundSoundTextField.getText();
-        transport.engine = controller.objectEngines[0];
-        transport.leftSided = controller.groundLeftSidedCheckbox.isSelected();
-        return transport;
+    public GroundTransport(Controller controller){
+        super(controller);
+        this.wheels = Integer.parseInt(controller.groundWheelsTextField.getText());
+        this.highwayConsumption = Double.parseDouble(controller.groundHighwayTextField.getText());
+        this.cityConsumption = Double.parseDouble(controller.groundCityTextField.getText());
+        this.gears = Integer.parseInt(controller.groundGearsTextField.getText());
+        this.wheelDrive = controller.groundWheelDriveComboBox.getValue();
+        this.gearboxType = controller.groundGearboxComboBox.getValue();
+        this.gearboxManufacturer = controller.groundGearboxManTextField.getText();
+        this.soundSystem = controller.groundSoundTextField.getText();
+        this.engine = controller.objectEngines[0];
+        this.leftSided = controller.groundLeftSidedCheckbox.isSelected();
     }
 
     public static boolean checkFields(TrailerWindowController controller){

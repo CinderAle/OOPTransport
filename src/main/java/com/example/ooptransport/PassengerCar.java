@@ -24,14 +24,13 @@ public class PassengerCar extends GroundTransport {
         this.trailer = null;
     }
 
-    public static PassengerCar getFilled(Controller controller) {
-        PassengerCar car = (PassengerCar) GroundTransport.getFilled(controller);
-        car.bodyType = controller.passengerBodyTypeComboBox.getValue();
-        car.trailer = controller.objectTrailer;
-        car.assembly = controller.passengerAssemblyTextField.getText();
-        car.equipment = controller.passengerEquipmentTextField.getText();
-        car.rimsRadius = Integer.parseInt(controller.passengerRimsRadiusTextField.getText());
-        return car;
+    public PassengerCar(Controller controller){
+        super(controller);
+        this.bodyType = controller.passengerBodyTypeComboBox.getValue();
+        this.trailer = controller.objectTrailer;
+        this.assembly = controller.passengerAssemblyTextField.getText();
+        this.equipment = controller.passengerEquipmentTextField.getText();
+        this.rimsRadius = Integer.parseInt(controller.passengerRimsRadiusTextField.getText());
     }
 
     public static boolean checkFields(TrailerWindowController controller){

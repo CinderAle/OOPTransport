@@ -1,6 +1,7 @@
 package com.example.ooptransport;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -12,17 +13,25 @@ public class TrailerWindowController extends Controller {
     public TextField trailerHeightField;
     public TextField trailerConnectionTextField;
 
-    public boolean isAdded;
+    public Trailer trailer = null;
 
     public void closeTrailerWindow(ActionEvent mouseEvent) {
         Stage stage = (Stage)this.trailerCancelButton.getScene().getWindow();
-        this.isAdded = false;
+        trailer = null;
         stage.close();
     }
 
     public void addTrailer(ActionEvent actionEvent) {
         Stage stage = (Stage)this.trailerCancelButton.getScene().getWindow();
-        this.isAdded = true;
-        stage.close();
+        if(Trailer.checkFields(this)){
+            trailer = new Trailer(this);
+            stage.close();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Not enough data");
+            alert.setContentText("Not all of the fields were set or were set wrongly!");
+            alert.showAndWait();
+        }
     }
 }

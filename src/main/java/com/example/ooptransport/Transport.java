@@ -15,13 +15,16 @@ public class Transport {
         this.mass = mass;
     }
 
-    public static Transport getFilled(Controller controller){
-        Transport transport = new Transport(controller.brandTextBox.getText(), controller.modelTextField.getText(),
-                                            controller.colorTextField.getText(), controller.interiorTextField.getText(),
-                                            controller.specificationsTextArea.getText(), Integer.parseInt(controller.seatsTextField.getText()),
-                                            Integer.parseInt(controller.yearTextField.getText()), Integer.parseInt(controller.mileageTextField.getText()),
-                                            Integer.parseInt(controller.massTextField.getText()));
-        return transport;
+    public Transport(Controller controller) {
+        this.brand = controller.brandTextBox.getText();
+        this.model = controller.modelTextField.getText();
+        this.color = controller.colorTextField.getText();
+        this.interior = controller.interiorTextField.getText();
+        this.specifications = controller.specificationsTextArea.getText();
+        this.seats = Integer.parseInt(controller.seatsTextField.getText());
+        this.manufactureYear = Integer.parseInt(controller.yearTextField.getText());
+        this.mileage = Integer.parseInt(controller.mileageTextField.getText());
+        this.mass = Integer.parseInt(controller.massTextField.getText());
     }
 
     protected static boolean checkForEmpty(String line) {

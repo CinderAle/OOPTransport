@@ -15,11 +15,10 @@ public class Truck extends GroundTransport {
         this.trailerConnection = null;
     }
 
-    public static Truck getFilled(Controller controller) {
-        Truck truck = (Truck) GroundTransport.getFilled(controller);
-        truck.trailer = controller.objectTrailer;
-        truck.trailerConnection = controller.truckConnectionTextField.getText();
-        return truck;
+    public Truck(Controller controller){
+        super(controller);
+        this.trailer = controller.objectTrailer;
+        this.trailerConnection = controller.truckConnectionTextField.getText();
     }
 
     public static boolean checkFields(TrailerWindowController controller) {
