@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooptransport.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="back" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooptransport.Controller">
    <children>
       <Pane fx:id="dataFieldsPane" layoutX="501.0" layoutY="51.0" prefHeight="533.0" prefWidth="485.0">
          <children>
@@ -20,10 +20,10 @@
                   <TextField fx:id="colorTextField" layoutX="14.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Color" />
                   <TextField fx:id="interiorTextField" layoutX="258.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Interior" />
                   <TextField fx:id="seatsTextField" layoutX="257.0" layoutY="102.0" prefHeight="25.0" prefWidth="95.0" promptText="Seats" />
-                  <TextField fx:id="mileageTextField" layoutX="364.0" layoutY="149.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage" />
-                  <TextField fx:id="massTextField" layoutX="258.0" layoutY="149.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass" />
-                  <ComboBox fx:id="vehicleTypeComboBox" layoutX="258.0" layoutY="184.0" prefHeight="25.0" prefWidth="212.0" />
                   <TextField fx:id="yearTextField" layoutX="364.0" layoutY="102.0" prefHeight="25.0" prefWidth="107.0" promptText="Year" />
+                  <TextField fx:id="massTextField" layoutX="258.0" layoutY="149.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass" />
+                  <TextField fx:id="mileageTextField" layoutX="364.0" layoutY="149.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage" />
+                  <ComboBox fx:id="vehicleTypeComboBox" layoutX="258.0" layoutY="184.0" prefHeight="25.0" prefWidth="212.0" />
                   <TextArea fx:id="specificationsTextArea" layoutX="14.0" layoutY="100.0" prefHeight="110.0" prefWidth="212.0" promptText="Specifications" />
                   <Label layoutX="14.0" layoutY="-5.0" text="Brand" />
                   <Label layoutX="257.0" layoutY="-9.0" text="Model" />
@@ -39,8 +39,8 @@
             <Pane fx:id="airTransportPane" layoutY="208.0" prefHeight="155.0" prefWidth="485.0" visible="false">
                <children>
                   <ComboBox fx:id="airTransportTypeComboBox" layoutX="251.0" layoutY="134.0" prefHeight="25.0" prefWidth="212.0" />
-                  <TextField fx:id="airMaxDistanceTextField" layoutX="357.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" promptText="Max distance" />
                   <TextField fx:id="airMaxHeightTextField" layoutX="246.0" layoutY="27.0" prefHeight="25.0" prefWidth="95.0" promptText="Max height" />
+                  <TextField fx:id="airMaxDistanceTextField" layoutX="357.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" promptText="Max distance" />
                   <Button fx:id="airAddEngineButton" layoutX="253.0" layoutY="78.0" mnemonicParsing="false" onMouseClicked="#showEngineWindow" text="Add engine " />
                   <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="27.0" prefHeight="132.0" prefWidth="212.0">
                     <content>
@@ -106,10 +106,10 @@
             </Pane>
             <Pane fx:id="passengerCarPane" layoutY="360.0" prefHeight="132.0" prefWidth="485.0" visible="false">
                <children>
+                  <ComboBox fx:id="passengerBodyTypeComboBox" layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" />
                   <TextField fx:id="passengerAssemblyTextField" layoutX="259.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" promptText="Assembly" />
                   <TextField fx:id="passengerEquipmentTextField" layoutX="14.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Equipment" />
                   <TextField fx:id="passengerRimsRadiusTextField" layoutX="259.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Rims radius" />
-                  <ComboBox fx:id="passengerBodyTypeComboBox" layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" />
                   <Button fx:id="passengerTrailerButton" layoutX="14.0" layoutY="106.0" mnemonicParsing="false" onMouseClicked="#showTrailerWindow" text="Trailer" />
                   <Label layoutX="14.0" layoutY="6.0" text="Body type" />
                   <Label layoutX="259.0" layoutY="6.0" text="Assembly" />

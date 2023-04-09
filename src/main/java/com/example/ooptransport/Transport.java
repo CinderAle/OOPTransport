@@ -1,10 +1,14 @@
 package com.example.ooptransport;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class Transport {
     protected String brand, model, color, interior, specifications;
@@ -60,8 +64,8 @@ public class Transport {
         Label interior = addLabelWithPos("Interior: " + this.interior);
         Label seats = addLabelWithPos("Seats: " + Integer.toString(this.seats));
         Label year = addLabelWithPos("Year: " + Integer.toString(this.manufactureYear));
-        Label miles = addLabelWithPos("Miles" + Integer.toString(this.mileage));
-        Label mass = addLabelWithPos("Mass" + Integer.toString(this.mass));
+        Label miles = addLabelWithPos("Miles: " + Integer.toString(this.mileage));
+        Label mass = addLabelWithPos("Mass: " + Integer.toString(this.mass));
         Label specifications = addLabelWithPos("Specifications: " + this.specifications);
         anchor.getChildren().addAll(brand, model, color, interior, specifications, seats, year, miles, mass);
         return anchor;
@@ -79,12 +83,9 @@ public class Transport {
         controller.specificationsTextArea.setText(this.specifications);
     }
 
-    public TitledPane getTitledPane() {
-        MenuItem edit = new MenuItem("Edit");
-        MenuItem delete = new MenuItem("Delete");
-        ContextMenu menu = new ContextMenu(edit, delete);
+    public TitledPane getTitledPane(Controller controller) {
         TitledPane titledPane = new TitledPane(this.brand + " " + this.model, this.initAnchor());
-        titledPane.setContextMenu(menu);
+        titledPane.setContextMenu(new TitledContextMenu(titledPane, controller));
         return titledPane;
     }
 
@@ -126,6 +127,34 @@ public class Transport {
     }
 
     public void generateFields(Controller controller) {
+        controller.basicDataFieldsPane.setVisible(true);
+    }
 
+    private class TitledContextMenu extends ContextMenu {
+        public TitledContextMenu(TitledPane tp, Controller controller){
+            MenuItem edit = new MenuItem("Edit");
+            MenuItem delete = new MenuItem("Delete");
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    int id = controller.objectsAccordion.getPanes().indexOf(tp);
+                    controller.allTransport.remove(id);
+                    controller.objectsAccordion.getPanes().remove(id);
+                }
+            });
+            edit.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    int id = controller.objectsAccordion.getPanes().indexOf(tp);
+                    controller.objectsAccordion.getPanes().remove(id);
+                    controller.isChanging = true;
+                    controller.allTransport.get(id).generateFields(controller);
+                    controller.allTransport.get(id).setFields(controller);
+                    controller.allTransport.remove(id);
+                }
+            });
+            getItems().add(edit);
+            getItems().add(delete);
+        }
     }
 }

@@ -63,6 +63,9 @@ public class Airplane extends AirTransport {
 
     @Override
     public void generateFields(Controller controller) {
+        super.generateFields(controller);
+        if(controller.airTransportTypeComboBox.getValue() == null)
+            controller.airTransportTypeComboBox.setValue(new TransportFactory("Airplane", new Airplane()));
         controller.hideThirdLevelPanes();
         controller.airplanePane.setVisible(true);
     }

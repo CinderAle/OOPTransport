@@ -69,6 +69,9 @@ public class SeaTransport extends Transport {
 
     @Override
     public void generateFields(Controller controller) {
+        super.generateFields(controller);
+        if(controller.vehicleTypeComboBox.getValue() == null)
+            controller.vehicleTypeComboBox.setValue(new TransportFactory("Sea transport", new SeaTransport()));
         controller.hideSecondLevelPanes();
         controller.hideThirdLevelPanes();
         controller.seaTransportPane.setVisible(true);

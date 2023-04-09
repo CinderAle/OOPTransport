@@ -1,9 +1,12 @@
 package com.example.ooptransport;
 
-import javafx.geometry.Orientation;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.TilePane;
+
+import java.io.IOException;
+
 
 public class Engine {
     private int cylinders, horsepower, torque;
@@ -59,12 +62,9 @@ public class Engine {
         controller.manufacturerTextField.setText(this.manufacturer);
     }
 
-    public TitledPane addTile(){
-        MenuItem editItem = new MenuItem("Edit");
-        MenuItem deleteItem = new MenuItem("Delete");
-        ContextMenu menu = new ContextMenu(editItem, deleteItem);
+    public TitledPane addTile(Controller controller){
         TitledPane titled = new TitledPane(this.manufacturer, initAnchor());
-        titled.setContextMenu(menu);
+        titled.setContextMenu(new TitledContextMenu(titled, controller));
         return titled;
     }
 
@@ -93,5 +93,31 @@ public class Engine {
         }
         else
             return false;
+    }
+
+    private class TitledContextMenu extends ContextMenu {
+        public TitledContextMenu(TitledPane tp, Controller controller){
+            MenuItem edit = new MenuItem("Edit");
+            MenuItem delete = new MenuItem("Delete");
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    controller.deleteEngineTitledPane(tp);
+                }
+            });
+            edit.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    try {
+                        controller.changeEngineTitledPane(tp);
+                    }
+                    catch(IOException e){
+                        System.out.println("Error occured!");
+                    }
+                }
+            });
+            getItems().add(edit);
+            getItems().add(delete);
+        }
     }
 }

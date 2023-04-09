@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -79,6 +80,43 @@ public class Controller {
 
     ArrayList<Transport> allTransport = null;
 
+    public void clearAllFields(){
+        brandTextBox.setText("");
+        modelTextField.setText("");
+        colorTextField.setText("");
+        interiorTextField.setText("");
+        massTextField.setText("");
+        mileageTextField.setText("");
+        yearTextField.setText("");
+        seatsTextField.setText("");
+        specificationsTextArea.setText("");
+        vehicleTypeComboBox.getSelectionModel().select(null);
+        airMaxHeightTextField.setText("");
+        airMaxDistanceTextField.setText("");
+        airTransportTypeComboBox.getSelectionModel().select(null);
+        airplaneClassTextField.setText("");
+        airplaneLandingsTextField.setText("");
+        enginesAccordion.getPanes().removeAll();
+        helicopterBladesTextField.setText("");
+        helicopterRotorsTypeTextField.setText("");
+        seaNormalDisplacementTextField.setText("");
+        seaVolumeDisplacementTextField.setText("");
+        groundTypeComboBox.getSelectionModel().select(null);
+        groundWheelsTextField.setText("");
+        groundHighwayTextField.setText("");
+        groundCityTextField.setText("");
+        groundGearsTextField.setText("");
+        groundWheelDriveComboBox.getSelectionModel().select(null);
+        groundGearboxComboBox.getSelectionModel().select(null);
+        groundGearboxManTextField.setText("");
+        groundSoundTextField.setText("");
+        passengerRimsRadiusTextField.setText("");
+        passengerEquipmentTextField.setText("");
+        passengerAssemblyTextField.setText("");
+        passengerBodyTypeComboBox.getSelectionModel().select(null);
+        truckConnectionTextField.setText("");
+    }
+
     public void hideSecondLevelPanes() {
         this.objectEngines = null;
         this.objectTrailer = null;
@@ -112,10 +150,6 @@ public class Controller {
         });
     }
 
-    public void generateNewAccordItem() {
-
-    }
-
     public void alertNotSetValues(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Not enough data");
@@ -145,7 +179,7 @@ public class Controller {
             ));
             isChanging = true;
         }
-        else{
+        else {
             TransportFactory tf = checkSetTypesCombo();
             if(tf != null){
                 Transport transport = tf.getTransportType();
@@ -156,7 +190,8 @@ public class Controller {
                     allTransport.add(transport);
                     this.objectsAccordion.getPanes().clear();
                     for(Transport t : allTransport)
-                        this.objectsAccordion.getPanes().add(t.getTitledPane());
+                        this.objectsAccordion.getPanes().add(t.getTitledPane(this));
+                    clearAllFields();
                     hideThirdLevelPanes();
                     hideSecondLevelPanes();
                     basicDataFieldsPane.setVisible(false);
@@ -171,11 +206,34 @@ public class Controller {
         }
     }
 
+    public void deleteEngineTitledPane(TitledPane titled) {
+        int id = enginesAccordion.getPanes().indexOf(titled);
+        enginesAccordion.getPanes().remove(id);
+        deleteEngine(id);
+    }
+
+    public void changeEngineTitledPane(TitledPane titled) throws IOException{
+        int id = enginesAccordion.getPanes().indexOf(titled);
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("engine-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 500, 300);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        EngineWindowController controller = fxmlLoader.getController();
+        objectEngines[id].setFields(controller);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Engine editor");
+        stage.setScene(scene);
+        stage.showAndWait();
+        if(controller.engine != null)
+            changeEngineInfo(id, controller.engine);
+        addEngineAccord();
+    }
+
     private void deleteEngine(int id){
         Engine[] tempEngines = new Engine[this.objectEngines.length - 1];
         for(int i = 0;i < id;i++)
             tempEngines[i] = this.objectEngines[i];
-        for(int i = 0;i + id < this.objectEngines.length;i++)
+        for(int i = 0;i + id < tempEngines.length;i++)
             tempEngines[i + id] = this.objectEngines[i + id + 1];
         this.objectEngines = tempEngines;
     }
@@ -201,13 +259,14 @@ public class Controller {
     public void addEngineAccord(){
         this.enginesAccordion.getPanes().clear();
         for(Engine engine: this.objectEngines)
-            enginesAccordion.getPanes().add(engine.addTile());
+            enginesAccordion.getPanes().add(engine.addTile(this));
     }
 
     public void showEngineWindow(MouseEvent mouseEvent) throws IOException {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("engine-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 300);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         EngineWindowController controller = fxmlLoader.getController();
         if(this.objectEngines != null && this.objectEngines.length == 1)
             this.objectEngines[0].setFields(controller);
@@ -229,6 +288,7 @@ public class Controller {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("trailer-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 350);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         TrailerWindowController controller = fxmlLoader.getController();
         if(this.objectTrailer != null)
             this.objectTrailer.setFields(controller);

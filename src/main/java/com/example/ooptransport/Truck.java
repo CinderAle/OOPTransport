@@ -54,6 +54,9 @@ public class Truck extends GroundTransport {
 
     @Override
     public void generateFields(Controller controller) {
+        super.generateFields(controller);
+        if(controller.groundTypeComboBox.getValue() == null)
+            controller.groundTypeComboBox.setValue(new TransportFactory("Truck", new Truck()));
         controller.hideThirdLevelPanes();
         controller.truckPane.setVisible(true);
     }

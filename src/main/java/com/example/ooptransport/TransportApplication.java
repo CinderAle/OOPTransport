@@ -12,6 +12,7 @@ public class TransportApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("app-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setTitle("Transport editor");
         stage.setScene(scene);
         stage.show();

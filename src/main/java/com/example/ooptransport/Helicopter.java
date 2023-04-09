@@ -63,6 +63,9 @@ public class Helicopter extends AirTransport {
 
     @Override
     public void generateFields(Controller controller) {
+        super.generateFields(controller);
+        if(controller.airTransportTypeComboBox.getValue() == null)
+            controller.airTransportTypeComboBox.setValue(new TransportFactory("Helicopter", new Helicopter()));
         controller.hideThirdLevelPanes();
         controller.helicopterPane.setVisible(true);
     }

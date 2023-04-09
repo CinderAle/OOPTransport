@@ -84,6 +84,9 @@ public class PassengerCar extends GroundTransport {
 
     @Override
     public void generateFields(Controller controller) {
+        super.generateFields(controller);
+        if(controller.groundTypeComboBox.getValue() == null)
+            controller.groundTypeComboBox.setValue(new TransportFactory("Car", new PassengerCar()));
         controller.hideThirdLevelPanes();
         controller.passengerCarPane.setVisible(true);
         controller.passengerBodyTypeComboBox.getItems().setAll(bodyTypes.values());
