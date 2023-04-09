@@ -34,6 +34,14 @@ public class Airplane extends AirTransport {
         return anchor;
     }
 
+    public void setFields(Controller controller) {
+        AirTransport transport = this;
+        transport.setFields(controller);
+        controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Airplane", new Airplane()));
+        controller.airplaneClassTextField.setText(this.airplaneClass);
+        controller.airplaneLandingsTextField.setText(Integer.toString(this.landings));
+    }
+
     public static boolean checkFields(TrailerWindowController controller) {
         boolean isCorrect = AirTransport.checkFields(controller) &&
                             checkForEmpty(controller.airplaneClassTextField.getText());

@@ -76,6 +76,23 @@ public class GroundTransport extends Transport {
         return anchor;
     }
 
+    public void setFields(Controller controller){
+        Transport transport = this;
+        transport.setFields(controller);
+        controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Ground transport", new GroundTransport()));
+        controller.groundWheelsTextField.setText(Integer.toString(this.wheels));
+        controller.groundHighwayTextField.setText(Double.toString(this.highwayConsumption));
+        controller.groundCityTextField.setText(Double.toString(this.cityConsumption));
+        controller.groundGearsTextField.setText(Integer.toString(this.gears));
+        controller.groundWheelDriveComboBox.getSelectionModel().select(this.wheelDrive);
+        controller.groundGearboxComboBox.getSelectionModel().select(this.gearboxType);
+        controller.groundGearboxManTextField.setText(this.gearboxManufacturer);
+        controller.groundSoundTextField.setText(this.soundSystem);
+        controller.groundLeftSidedCheckbox.setSelected(this.leftSided);
+        controller.objectEngines = new Engine[1];
+        controller.objectEngines[0] = this.engine;
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = Transport.checkFields(controller) &&
                             controller.objectEngines != null &&

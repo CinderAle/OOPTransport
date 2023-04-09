@@ -41,6 +41,16 @@ public class AirTransport extends Transport {
         return anchor;
     }
 
+    public void setFields(Controller controller){
+        Transport transport = this;
+        transport.setFields(controller);
+        controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Air transport", new AirTransport()));
+        controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
+        controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
+        controller.objectEngines = this.engines;
+        controller.addEngineAccord();
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = Transport.checkFields(controller) &&
                             controller.objectEngines != null;

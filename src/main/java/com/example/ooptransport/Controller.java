@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -143,15 +144,17 @@ public class Controller {
         }
     }
 
-    private void addEngine(Engine engine){
+    private void addEngine(Engine engine) {
         Engine[] tempEngines = new Engine[this.objectEngines != null ? this.objectEngines.length + 1 : 1];
-        for(int i = 0;i < tempEngines.length - 1;i++)
+        for (int i = 0; i < tempEngines.length - 1; i++)
             tempEngines[i] = this.objectEngines[i];
         tempEngines[tempEngines.length - 1] = engine;
         this.objectEngines = tempEngines;
+
     }
 
-    private void addEngineAccord(){
+    public void addEngineAccord(){
+        this.enginesAccordion.getPanes().clear();
         for(Engine engine: this.objectEngines)
             enginesAccordion.getPanes().add(engine.addTile());
     }

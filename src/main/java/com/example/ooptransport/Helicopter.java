@@ -34,6 +34,14 @@ public class Helicopter extends AirTransport {
         return anchor;
     }
 
+    public void setFields(Controller controller) {
+        AirTransport transport = this;
+        transport.setFields(controller);
+        controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Helicopter", new Helicopter()));
+        controller.helicopterBladesTextField.setText(Integer.toString(this.blades));
+        controller.helicopterRotorsTypeTextField.setText(this.rotorsType);
+    }
+
     public static boolean checkFields(TrailerWindowController controller) {
         boolean isCorrect = AirTransport.checkFields(controller) &&
                             checkForEmpty(controller.helicopterRotorsTypeTextField.getText());

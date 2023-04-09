@@ -30,6 +30,14 @@ public class Trailer extends Transport {
         return anchor;
     }
 
+    public void setFields(TrailerWindowController controller){
+        Transport transport = this;
+        transport.setFields(controller);
+        controller.trailerConnectionTextField.setText(this.trailerType);
+        controller.trailerWidthField.setText(Integer.toString(this.width));
+        controller.trailerHeightField.setText(Integer.toString(this.height));
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = Transport.checkFields(controller) && checkForEmpty(controller.trailerConnectionTextField.getText());
         if(isCorrect){

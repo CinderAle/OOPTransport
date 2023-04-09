@@ -48,6 +48,17 @@ public class PassengerCar extends GroundTransport {
         return anchor;
     }
 
+    public void setFields(Controller controller) {
+        GroundTransport transport = this;
+        transport.setFields(controller);
+        controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Car", new PassengerCar()));
+        controller.passengerBodyTypeComboBox.getSelectionModel().select(this.bodyType);
+        controller.passengerAssemblyTextField.setText(this.assembly);
+        controller.passengerEquipmentTextField.setText(this.equipment);
+        controller.passengerRimsRadiusTextField.setText(Integer.toString(this.rimsRadius));
+        controller.objectTrailer = this.trailer;
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = GroundTransport.checkFields(controller) &&
                             checkForEmpty(controller.passengerAssemblyTextField.getText()) &&

@@ -47,6 +47,18 @@ public class Transport {
         return anchor;
     }
 
+    public void setFields(Controller controller){
+        controller.brandTextBox.setText(this.brand);
+        controller.modelTextField.setText(this.model);
+        controller.colorTextField.setText(this.color);
+        controller.interiorTextField.setText(this.interior);
+        controller.seatsTextField.setText(Integer.toString(this.seats));
+        controller.yearTextField.setText(Integer.toString(this.manufactureYear));
+        controller.mileageTextField.setText(Integer.toString(this.mileage));
+        controller.massTextField.setText(Integer.toString(this.mass));
+        controller.specificationsTextArea.setText(this.specifications);
+    }
+
     public TitledPane getTitledPane() {
         return new TitledPane(this.brand + " " + this.model, initAnchor());
     }

@@ -25,6 +25,14 @@ public class Truck extends GroundTransport {
         this.trailerConnection = controller.truckConnectionTextField.getText();
     }
 
+    public void setFields(Controller controller) {
+        GroundTransport transport = this;
+        transport.setFields(controller);
+        controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Truck", new Truck()));
+        controller.truckConnectionTextField.setText(this.trailerConnection);
+        controller.objectTrailer = this.trailer;
+    }
+
     public AnchorPane initAnchor(){
         GroundTransport transport = this;
         AnchorPane anchor = transport.initAnchor();

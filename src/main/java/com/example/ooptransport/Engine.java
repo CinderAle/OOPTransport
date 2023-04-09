@@ -1,9 +1,7 @@
 package com.example.ooptransport;
 
 import javafx.geometry.Orientation;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 
@@ -35,8 +33,21 @@ public class Engine {
         return anchor;
     }
 
+    public void setFields(EngineWindowController controller){
+        controller.cylindersTextField.setText(Integer.toString(this.cylinders));
+        controller.horsepowerTextField.setText(Integer.toString(this.horsepower));
+        controller.torqueTextField.setText(Integer.toString(this.torque));
+        controller.volumeTextField.setText(Double.toString(this.volume));
+        controller.manufacturerTextField.setText(this.manufacturer);
+    }
+
     public TitledPane addTile(){
-        return new TitledPane(this.manufacturer, initAnchor());
+        MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
+        ContextMenu menu = new ContextMenu(editItem, deleteItem);
+        TitledPane titled = new TitledPane(this.manufacturer, initAnchor());
+        titled.setContextMenu(menu);
+        return titled;
     }
 
     public static Engine getFilled(EngineWindowController controller){
