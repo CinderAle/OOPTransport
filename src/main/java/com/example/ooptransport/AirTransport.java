@@ -31,19 +31,24 @@ public class AirTransport extends Transport {
     }
 
     public AnchorPane initAnchor(){
-        Transport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label maxHeight = new Label("Maximum height: " + this.maxHeight);
-        Label maxDistance = new Label("Maximum distance: " + this.maxDistance);
-        anchor.getChildren().addAll(maxHeight, maxDistance, new Label("Engines: "));
-        for(Engine engine: this.engines)
+        AnchorPane anchor = super.initAnchor();
+        Label maxHeight = addLabelWithPos("Maximum height: " + this.maxHeight);
+        Label maxDistance = addLabelWithPos("Maximum distance: " + this.maxDistance);
+        anchor.getChildren().addAll(maxHeight, maxDistance, addLabelWithPos("Engines: "));
+        for(Engine engine: this.engines) {
+            engine.setLabelsYStart(labelsYStart);
             anchor.getChildren().add(engine.initAnchor());
+            setLabelsYStart(engine.getLabelsYStart());
+        }
         return anchor;
     }
 
+    public AirTransport fetchDataFromFields(Controller controller) {
+        return new AirTransport(controller);
+    }
+
     public void setFields(Controller controller){
-        Transport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Air transport", new AirTransport()));
         controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
         controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
@@ -51,8 +56,9 @@ public class AirTransport extends Transport {
         controller.addEngineAccord();
     }
 
-    public static boolean checkFields(TrailerWindowController controller){
-        boolean isCorrect = Transport.checkFields(controller) &&
+    public boolean checkFields(Controller controller){
+        Transport transport = new Transport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             controller.objectEngines != null;
         if(isCorrect){
             try{

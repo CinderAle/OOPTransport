@@ -26,24 +26,27 @@ public class Helicopter extends AirTransport {
     }
 
     public AnchorPane initAnchor(){
-        AirTransport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label blades = new Label("Blades: " + this.blades);
-        Label rotorsType = new Label("Rotors type: " + this.rotorsType);
+        AnchorPane anchor = super.initAnchor();
+        Label blades = addLabelWithPos("Blades: " + this.blades);
+        Label rotorsType = addLabelWithPos("Rotors type: " + this.rotorsType);
         anchor.getChildren().addAll(blades, rotorsType);
         return anchor;
     }
 
+    public Helicopter fetchDataFromFields(Controller controller) {
+        return new Helicopter(controller);
+    }
+
     public void setFields(Controller controller) {
-        AirTransport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Helicopter", new Helicopter()));
         controller.helicopterBladesTextField.setText(Integer.toString(this.blades));
         controller.helicopterRotorsTypeTextField.setText(this.rotorsType);
     }
 
-    public static boolean checkFields(TrailerWindowController controller) {
-        boolean isCorrect = AirTransport.checkFields(controller) &&
+    public boolean checkFields(Controller controller) {
+        AirTransport transport = new AirTransport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             checkForEmpty(controller.helicopterRotorsTypeTextField.getText());
         if (isCorrect){
             try{

@@ -22,13 +22,31 @@ public class Engine {
         return tf.getText().length() > 0;
     }
 
+    private int labelsYStart = 5;
+    private int labelsDistance = 20;
+    protected Label addLabelWithPos(String text){
+        Label label = new Label(text);
+        label.setLayoutX(10);
+        label.setLayoutY(labelsYStart);
+        labelsYStart += labelsDistance;
+        return label;
+    }
+
+    public void setLabelsYStart(int start){
+        this.labelsYStart = start;
+    }
+
+    public int getLabelsYStart(){
+        return this.labelsYStart;
+    }
+
     public AnchorPane initAnchor(){
         AnchorPane anchor = new AnchorPane();
-        Label cylinderLabel = new Label("Cylinder: " + Integer.toString(this.cylinders));
-        Label horsepowerLabel = new Label("Horsepower: " + Integer.toString(this.horsepower));
-        Label torqueLabel = new Label("Torque: " + Integer.toString(this.torque));
-        Label volumeLabel = new Label("Volume: " + Double.toString(this.volume));
-        Label manLabel = new Label("Manufacturer: " + this.manufacturer);
+        Label cylinderLabel = addLabelWithPos("Cylinder: " + Integer.toString(this.cylinders));
+        Label horsepowerLabel = addLabelWithPos("Horsepower: " + Integer.toString(this.horsepower));
+        Label torqueLabel = addLabelWithPos("Torque: " + Integer.toString(this.torque));
+        Label volumeLabel = addLabelWithPos("Volume: " + Double.toString(this.volume));
+        Label manLabel = addLabelWithPos("Manufacturer: " + this.manufacturer);
         anchor.getChildren().addAll(cylinderLabel, horsepowerLabel, torqueLabel, volumeLabel, manLabel);
         return anchor;
     }

@@ -26,24 +26,27 @@ public class Airplane extends AirTransport {
     }
 
     public AnchorPane initAnchor(){
-        AirTransport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label airClass = new Label("Airplane class: " + this.airplaneClass);
-        Label landings = new Label("Landings: " + this.landings);
+        AnchorPane anchor = super.initAnchor();
+        Label airClass = addLabelWithPos("Airplane class: " + this.airplaneClass);
+        Label landings = addLabelWithPos("Landings: " + this.landings);
         anchor.getChildren().addAll(airClass, landings);
         return anchor;
     }
 
+    public Airplane fetchDataFromFields(Controller controller) {
+        return new Airplane(controller);
+    }
+
     public void setFields(Controller controller) {
-        AirTransport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Airplane", new Airplane()));
         controller.airplaneClassTextField.setText(this.airplaneClass);
         controller.airplaneLandingsTextField.setText(Integer.toString(this.landings));
     }
 
-    public static boolean checkFields(TrailerWindowController controller) {
-        boolean isCorrect = AirTransport.checkFields(controller) &&
+    public boolean checkFields(Controller controller) {
+        AirTransport transport = new AirTransport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             checkForEmpty(controller.airplaneClassTextField.getText());
         if(isCorrect){
             try{

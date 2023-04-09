@@ -22,8 +22,9 @@ public class TrailerWindowController extends Controller {
     }
 
     public void addTrailer(ActionEvent actionEvent) {
+        Trailer temp = new Trailer();
         Stage stage = (Stage)this.trailerCancelButton.getScene().getWindow();
-        if(Trailer.checkFields(this)){
+        if(temp.checkFields(this)){
             trailer = new Trailer(this);
             stage.close();
         }

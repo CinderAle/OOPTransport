@@ -16,6 +16,8 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -75,8 +77,11 @@ public class Controller {
     public Accordion objectsAccordion;
     boolean isChanging = false;
 
+    ArrayList<Transport> allTransport = null;
 
     public void hideSecondLevelPanes() {
+        this.objectEngines = null;
+        this.objectTrailer = null;
         airTransportPane.setVisible(false);
         groundTransportPane.setVisible(false);
         seaTransportPane.setVisible(false);
@@ -111,6 +116,25 @@ public class Controller {
 
     }
 
+    public void alertNotSetValues(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Not enough data");
+        alert.setContentText("Not all of the fields were set or were set wrongly!");
+        alert.showAndWait();
+    }
+
+    private TransportFactory checkSetTypesCombo(){
+        TransportFactory tf = groundTypeComboBox.getValue();
+        if(tf == null)
+            tf = airTransportTypeComboBox.getValue();
+        if(tf == null) {
+            tf = vehicleTypeComboBox.getValue();
+            if(tf != null && !tf.getTransportTypeName().equals("Sea transport"))
+                tf = null;
+        }
+        return tf;
+    }
+
     public void addVehicle(MouseEvent mouseEvent) {
         if(!isChanging) {
             this.basicDataFieldsPane.setVisible(true);
@@ -119,11 +143,32 @@ public class Controller {
                     new TransportFactory("Ground transport", new GroundTransport()),
                     new TransportFactory("Sea transport", new SeaTransport())
             ));
+            isChanging = true;
         }
         else{
-
+            TransportFactory tf = checkSetTypesCombo();
+            if(tf != null){
+                Transport transport = tf.getTransportType();
+                if(transport.checkFields(this)){
+                    transport = transport.fetchDataFromFields(this);
+                    if(allTransport == null)
+                        allTransport = new ArrayList<Transport>();
+                    allTransport.add(transport);
+                    this.objectsAccordion.getPanes().clear();
+                    for(Transport t : allTransport)
+                        this.objectsAccordion.getPanes().add(t.getTitledPane());
+                    hideThirdLevelPanes();
+                    hideSecondLevelPanes();
+                    basicDataFieldsPane.setVisible(false);
+                    isChanging = false;
+                }
+                else
+                    alertNotSetValues();
+            }
+            else{
+                alertNotSetValues();
+            }
         }
-        isChanging = !isChanging;
     }
 
     private void deleteEngine(int id){
@@ -136,7 +181,7 @@ public class Controller {
     }
 
     private void changeEngineInfo(int id, Engine engine){
-        if(id < this.objectEngines.length)
+        if(this.objectEngines != null && id < this.objectEngines.length)
             this.objectEngines[id] = engine;
         else if(id == 0){
             this.objectEngines = new Engine[1];
@@ -164,6 +209,8 @@ public class Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("engine-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 300);
         EngineWindowController controller = fxmlLoader.getController();
+        if(this.objectEngines != null && this.objectEngines.length == 1)
+            this.objectEngines[0].setFields(controller);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Engine editor");
         stage.setScene(scene);
@@ -183,6 +230,8 @@ public class Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("trailer-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 350);
         TrailerWindowController controller = fxmlLoader.getController();
+        if(this.objectTrailer != null)
+            this.objectTrailer.setFields(controller);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Trailer editor");
         stage.setScene(scene);

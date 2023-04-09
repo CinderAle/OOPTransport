@@ -26,23 +26,27 @@ public class Truck extends GroundTransport {
     }
 
     public void setFields(Controller controller) {
-        GroundTransport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Truck", new Truck()));
         controller.truckConnectionTextField.setText(this.trailerConnection);
         controller.objectTrailer = this.trailer;
     }
 
+    public Truck fetchDataFromFields(Controller controller) {
+        return new Truck(controller);
+    }
+
     public AnchorPane initAnchor(){
-        GroundTransport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label connection = new Label("Connection type: " + this.trailerConnection);
+        AnchorPane anchor = super.initAnchor();
+        Label connection = addLabelWithPos("Connection type: " + this.trailerConnection);
+        this.trailer.setLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(connection, new Label("Trailer: "), this.trailer.initAnchor());
         return anchor;
     }
 
-    public static boolean checkFields(TrailerWindowController controller) {
-        boolean isCorrect = GroundTransport.checkFields(controller) &&
+    public boolean checkFields(Controller controller) {
+        GroundTransport transport = new GroundTransport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             checkForEmpty(controller.truckConnectionTextField.getText()) &&
                             controller.objectTrailer != null;
         return isCorrect;

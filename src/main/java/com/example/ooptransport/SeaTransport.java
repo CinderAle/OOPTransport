@@ -28,27 +28,32 @@ public class SeaTransport extends Transport {
         this.engine = controller.objectEngines[0];
     }
 
+    @Override
     public AnchorPane initAnchor(){
-        Transport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label volume = new Label("Volume displacement: " + this.volumeDisplacement);
-        Label normal = new Label("Normal displacement: " + this.normalDisplacement);
-        Label engineLabel = new Label("Engine:");
+        AnchorPane anchor = super.initAnchor();
+        Label volume = addLabelWithPos("Volume displacement: " + this.volumeDisplacement);
+        Label normal = addLabelWithPos("Normal displacement: " + this.normalDisplacement);
+        Label engineLabel = addLabelWithPos("Engine:");
+        this.engine.setLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(volume, normal, engineLabel, this.engine.initAnchor());
         return anchor;
     }
 
+    public SeaTransport fetchDataFromFields(Controller controller){
+        return new SeaTransport(controller);
+    }
+
     public void setFields(Controller controller){
-        Transport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.seaVolumeDisplacementTextField.setText(Integer.toString(this.volumeDisplacement));
         controller.seaNormalDisplacementTextField.setText(Integer.toString(this.normalDisplacement));
         controller.objectEngines = new Engine[1];
         controller.objectEngines[0] = this.engine;
     }
 
-    public static boolean checkFields(TrailerWindowController controller) {
-        boolean isCorrect = Transport.checkFields(controller) && controller.objectEngines != null;
+    public boolean checkFields(Controller controller) {
+        Transport transport = new Transport();
+        boolean isCorrect = transport.checkFields(controller) && controller.objectEngines != null;
         if(isCorrect){
             try{
                 Double.parseDouble(controller.seaNormalDisplacementTextField.getText());

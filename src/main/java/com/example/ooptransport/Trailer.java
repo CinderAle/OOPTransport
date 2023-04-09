@@ -20,12 +20,19 @@ public class Trailer extends Transport {
         this.width = Integer.parseInt(controller.trailerWidthField.getText());
     }
 
+    public Trailer() {
+        super();
+        this.trailerType = "";
+        this.width = 0;
+        this.height = 0;
+    }
+
     public AnchorPane initAnchor(){
         Transport transport = this;
         AnchorPane anchor = transport.initAnchor();
-        Label type = new Label("Connection type: " + this.trailerType);
-        Label width = new Label("Width: " + this.width);
-        Label height = new Label("Height: " + this.height);
+        Label type = addLabelWithPos("Connection type: " + this.trailerType);
+        Label width =addLabelWithPos("Width: " + this.width);
+        Label height = addLabelWithPos("Height: " + this.height);
         anchor.getChildren().addAll(type, width, height);
         return anchor;
     }
@@ -38,8 +45,9 @@ public class Trailer extends Transport {
         controller.trailerHeightField.setText(Integer.toString(this.height));
     }
 
-    public static boolean checkFields(TrailerWindowController controller){
-        boolean isCorrect = Transport.checkFields(controller) && checkForEmpty(controller.trailerConnectionTextField.getText());
+    public boolean checkFields(TrailerWindowController controller){
+        Transport transport = new Transport();
+        boolean isCorrect = transport.checkFields(controller) && checkForEmpty(controller.trailerConnectionTextField.getText());
         if(isCorrect){
             try{
                 Integer.parseInt(controller.trailerWidthField.getText());

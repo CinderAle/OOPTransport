@@ -1,6 +1,8 @@
 package com.example.ooptransport;
 
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 
@@ -32,17 +34,35 @@ public class Transport {
         this.mass = Integer.parseInt(controller.massTextField.getText());
     }
 
+    public Transport fetchDataFromFields(Controller controller){
+        return new Transport(controller);
+    }
+
+    protected int labelsYStart = 5;
+    protected int labelsDistance = 20;
+    protected Label addLabelWithPos(String text){
+        Label label = new Label(text);
+        label.setLayoutX(10);
+        label.setLayoutY(labelsYStart);
+        labelsYStart += labelsDistance;
+        return label;
+    }
+
+    public void setLabelsYStart(int labelsYStart) {
+        this.labelsYStart = labelsYStart;
+    }
+
     public AnchorPane initAnchor(){
         AnchorPane anchor = new AnchorPane();
-        Label brand = new Label("Brand: " + this.brand);
-        Label model = new Label("Model: " + this.model);
-        Label color = new Label("Color: " + this.color);
-        Label interior = new Label("Interior: " + this.interior);
-        Label seats = new Label("Seats: " + Integer.toString(this.seats));
-        Label year = new Label("Year: " + Integer.toString(this.manufactureYear));
-        Label miles = new Label("Miles" + Integer.toString(this.mileage));
-        Label mass = new Label("Mass" + Integer.toString(this.mass));
-        Label specifications = new Label("Specifications: " + this.specifications);
+        Label brand = addLabelWithPos("Brand: " + this.brand);
+        Label model = addLabelWithPos("Model: " + this.model);
+        Label color = addLabelWithPos("Color: " + this.color);
+        Label interior = addLabelWithPos("Interior: " + this.interior);
+        Label seats = addLabelWithPos("Seats: " + Integer.toString(this.seats));
+        Label year = addLabelWithPos("Year: " + Integer.toString(this.manufactureYear));
+        Label miles = addLabelWithPos("Miles" + Integer.toString(this.mileage));
+        Label mass = addLabelWithPos("Mass" + Integer.toString(this.mass));
+        Label specifications = addLabelWithPos("Specifications: " + this.specifications);
         anchor.getChildren().addAll(brand, model, color, interior, specifications, seats, year, miles, mass);
         return anchor;
     }
@@ -60,14 +80,19 @@ public class Transport {
     }
 
     public TitledPane getTitledPane() {
-        return new TitledPane(this.brand + " " + this.model, initAnchor());
+        MenuItem edit = new MenuItem("Edit");
+        MenuItem delete = new MenuItem("Delete");
+        ContextMenu menu = new ContextMenu(edit, delete);
+        TitledPane titledPane = new TitledPane(this.brand + " " + this.model, this.initAnchor());
+        titledPane.setContextMenu(menu);
+        return titledPane;
     }
 
     protected static boolean checkForEmpty(String line) {
         return line.length() > 0;
     }
 
-    public static boolean checkFields(TrailerWindowController controller) {
+    public boolean checkFields(Controller controller) {
         boolean isCorrect = checkForEmpty(controller.brandTextBox.getText()) &&
                             checkForEmpty(controller.modelTextField.getText()) &&
                             checkForEmpty(controller.colorTextField.getText()) &&

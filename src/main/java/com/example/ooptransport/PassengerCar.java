@@ -38,19 +38,23 @@ public class PassengerCar extends GroundTransport {
     }
 
     public AnchorPane initAnchor(){
-        GroundTransport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label body = new Label("Body type: " + this.bodyType);
-        Label assembly = new Label("Assembly: " + this.assembly);
-        Label equipment = new Label("Equipment: " + this.equipment);
-        Label rims = new Label("Rims radius: " + this.rimsRadius);
-        anchor.getChildren().addAll(body, assembly, equipment, rims, new Label("Trailer:"),this.trailer.initAnchor());
+        AnchorPane anchor = super.initAnchor();
+        Label body = addLabelWithPos("Body type: " + this.bodyType);
+        Label assembly = addLabelWithPos("Assembly: " + this.assembly);
+        Label equipment = addLabelWithPos("Equipment: " + this.equipment);
+        Label rims = addLabelWithPos("Rims radius: " + this.rimsRadius);
+        anchor.getChildren().addAll(body, assembly, equipment, rims, addLabelWithPos("Trailer:"));
+        this.trailer.setLabelsYStart(labelsYStart);
+        anchor.getChildren().add(this.trailer != null ? this.trailer.initAnchor() : addLabelWithPos("None"));
         return anchor;
     }
 
+    public PassengerCar fetchDataFromFields(Controller controller) {
+        return new PassengerCar(controller);
+    }
+
     public void setFields(Controller controller) {
-        GroundTransport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Car", new PassengerCar()));
         controller.passengerBodyTypeComboBox.getSelectionModel().select(this.bodyType);
         controller.passengerAssemblyTextField.setText(this.assembly);
@@ -59,8 +63,9 @@ public class PassengerCar extends GroundTransport {
         controller.objectTrailer = this.trailer;
     }
 
-    public static boolean checkFields(TrailerWindowController controller){
-        boolean isCorrect = GroundTransport.checkFields(controller) &&
+    public boolean checkFields(Controller controller){
+        GroundTransport transport = new GroundTransport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             checkForEmpty(controller.passengerAssemblyTextField.getText()) &&
                             checkForEmpty(controller.passengerEquipmentTextField.getText()) &&
                             controller.passengerBodyTypeComboBox.getValue() != null;

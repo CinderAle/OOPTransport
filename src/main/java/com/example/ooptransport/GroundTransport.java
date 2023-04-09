@@ -59,26 +59,29 @@ public class GroundTransport extends Transport {
     }
 
     public AnchorPane initAnchor(){
-        Transport transport = this;
-        AnchorPane anchor = transport.initAnchor();
-        Label wheels = new Label("Wheels: " + this.wheels);
-        Label highway = new Label("Highway consumption: " + this.highwayConsumption);
-        Label city = new Label("City consumption: " + this.cityConsumption);
-        Label gears = new Label("Gears: " + this.gears);
-        Label wheelDrive = new Label("Wheel drive: " + this.wheelDrive);
-        Label gearboxType = new Label("Gearbox type: " + this.gearboxType);
-        Label gearManufacturer = new Label("Gearbox manufacturer: " + this.gearboxManufacturer);
-        Label soundSystem = new Label("Sound system: " + this.soundSystem);
-        Label leftSided = new Label("Left sided: " + (this.leftSided ? "yes" : "no"));
-        Label engineLabel = new Label("Engine:");
+        AnchorPane anchor = super.initAnchor();
+        Label wheels = addLabelWithPos("Wheels: " + this.wheels);
+        Label highway = addLabelWithPos("Highway consumption: " + this.highwayConsumption);
+        Label city = addLabelWithPos("City consumption: " + this.cityConsumption);
+        Label gears = addLabelWithPos("Gears: " + this.gears);
+        Label wheelDrive = addLabelWithPos("Wheel drive: " + this.wheelDrive);
+        Label gearboxType = addLabelWithPos("Gearbox type: " + this.gearboxType);
+        Label gearManufacturer = addLabelWithPos("Gearbox manufacturer: " + this.gearboxManufacturer);
+        Label soundSystem = addLabelWithPos("Sound system: " + this.soundSystem);
+        Label leftSided = addLabelWithPos("Left sided: " + (this.leftSided ? "yes" : "no"));
+        Label engineLabel = addLabelWithPos("Engine:");
+        this.engine.setLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(wheels, highway, city, gears, wheelDrive, gearboxType, gearManufacturer, soundSystem, leftSided, engineLabel);
         anchor.getChildren().add(this.engine.initAnchor());
         return anchor;
     }
 
+    public GroundTransport fetchDataFromFields(Controller controller) {
+        return new GroundTransport(controller);
+    }
+
     public void setFields(Controller controller){
-        Transport transport = this;
-        transport.setFields(controller);
+        super.setFields(controller);
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Ground transport", new GroundTransport()));
         controller.groundWheelsTextField.setText(Integer.toString(this.wheels));
         controller.groundHighwayTextField.setText(Double.toString(this.highwayConsumption));
@@ -93,8 +96,9 @@ public class GroundTransport extends Transport {
         controller.objectEngines[0] = this.engine;
     }
 
-    public static boolean checkFields(TrailerWindowController controller){
-        boolean isCorrect = Transport.checkFields(controller) &&
+    public boolean checkFields(Controller controller){
+        Transport transport = new Transport();
+        boolean isCorrect = transport.checkFields(controller) &&
                             controller.objectEngines != null &&
                             checkForEmpty(controller.groundSoundTextField.getText()) &&
                             checkForEmpty(controller.groundGearboxManTextField.getText()) &&
