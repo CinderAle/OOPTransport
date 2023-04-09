@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class Helicopter extends AirTransport {
     private int blades;
     private String rotorsType;
@@ -19,6 +23,15 @@ public class Helicopter extends AirTransport {
         super(controller);
         this.blades = Integer.parseInt(controller.helicopterBladesTextField.getText());
         this.rotorsType = controller.helicopterRotorsTypeTextField.getText();
+    }
+
+    public AnchorPane initAnchor(){
+        AirTransport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label blades = new Label("Blades: " + this.blades);
+        Label rotorsType = new Label("Rotors type: " + this.rotorsType);
+        anchor.getChildren().addAll(blades, rotorsType);
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller) {

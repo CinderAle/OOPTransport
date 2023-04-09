@@ -4,10 +4,12 @@ import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -68,6 +70,8 @@ public class Controller {
     public TextField truckConnectionTextField;
     public Engine[] objectEngines;
     public Trailer objectTrailer;
+    public Accordion enginesAccordion;
+    public Accordion objectsAccordion;
     boolean isChanging = false;
 
 
@@ -121,6 +125,37 @@ public class Controller {
         isChanging = !isChanging;
     }
 
+    private void deleteEngine(int id){
+        Engine[] tempEngines = new Engine[this.objectEngines.length - 1];
+        for(int i = 0;i < id;i++)
+            tempEngines[i] = this.objectEngines[i];
+        for(int i = 0;i + id < this.objectEngines.length;i++)
+            tempEngines[i + id] = this.objectEngines[i + id + 1];
+        this.objectEngines = tempEngines;
+    }
+
+    private void changeEngineInfo(int id, Engine engine){
+        if(id < this.objectEngines.length)
+            this.objectEngines[id] = engine;
+        else if(id == 0){
+            this.objectEngines = new Engine[1];
+            this.objectEngines[0] = engine;
+        }
+    }
+
+    private void addEngine(Engine engine){
+        Engine[] tempEngines = new Engine[this.objectEngines != null ? this.objectEngines.length + 1 : 1];
+        for(int i = 0;i < tempEngines.length - 1;i++)
+            tempEngines[i] = this.objectEngines[i];
+        tempEngines[tempEngines.length - 1] = engine;
+        this.objectEngines = tempEngines;
+    }
+
+    private void addEngineAccord(){
+        for(Engine engine: this.objectEngines)
+            enginesAccordion.getPanes().add(engine.addTile());
+    }
+
     public void showEngineWindow(MouseEvent mouseEvent) throws IOException {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(TransportApplication.class.getResource("engine-view.fxml"));
@@ -130,6 +165,14 @@ public class Controller {
         stage.setTitle("Engine editor");
         stage.setScene(scene);
         stage.showAndWait();
+        if(controller.engine != null && this.vehicleTypeComboBox.getValue() != null){
+            if(this.vehicleTypeComboBox.getValue().getTransportTypeName().equals("Air transport")) {
+                addEngine(controller.engine);
+                addEngineAccord();
+            }
+            else
+                changeEngineInfo(0, controller.engine);
+        }
     }
 
     public void showTrailerWindow(MouseEvent mouseEvent) throws IOException {
@@ -141,5 +184,6 @@ public class Controller {
         stage.setTitle("Trailer editor");
         stage.setScene(scene);
         stage.showAndWait();
+        this.objectTrailer = controller.trailer;
     }
 }

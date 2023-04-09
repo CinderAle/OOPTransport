@@ -46,12 +46,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="200.0">
                            <children>
-                              <Accordion prefHeight="132.0" prefWidth="212.0">
-                                <panes>
-                                  <TitledPane animated="false" text="untitled 1" />
-                                  <TitledPane animated="false" text="untitled 2" />
-                                </panes>
-                              </Accordion>
+                              <Accordion fx:id="enginesAccordion" prefHeight="132.0" prefWidth="212.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -135,21 +130,7 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="505.0" prefWidth="458.0">
                <content>
-                  <Accordion prefHeight="503.0" prefWidth="458.0">
-                    <panes>
-                      <TitledPane animated="false" prefHeight="66.0" prefWidth="458.0" text="untitled 1">
-                           <contextMenu>
-                              <ContextMenu>
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Edit information" />
-                                    <MenuItem mnemonicParsing="false" text="Delete object" />
-                                </items>
-                              </ContextMenu>
-                           </contextMenu>
-                        </TitledPane>
-                      <TitledPane animated="false" prefHeight="70.0" prefWidth="458.0" text="untitled 2" />
-                    </panes>
-                  </Accordion>
+                  <Accordion fx:id="objectsAccordion" prefHeight="503.0" prefWidth="458.0" />
                </content>
             </ScrollPane>
          </children>

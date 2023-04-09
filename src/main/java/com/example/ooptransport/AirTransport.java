@@ -1,5 +1,8 @@
 package com.example.ooptransport;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class AirTransport extends Transport {
@@ -25,6 +28,17 @@ public class AirTransport extends Transport {
         this.maxHeight = Integer.parseInt(controller.airMaxHeightTextField.getText());
         this.maxDistance = Integer.parseInt(controller.airMaxDistanceTextField.getText());
         this.engines = controller.objectEngines;
+    }
+
+    public AnchorPane initAnchor(){
+        Transport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label maxHeight = new Label("Maximum height: " + this.maxHeight);
+        Label maxDistance = new Label("Maximum distance: " + this.maxDistance);
+        anchor.getChildren().addAll(maxHeight, maxDistance, new Label("Engines: "));
+        for(Engine engine: this.engines)
+            anchor.getChildren().add(engine.initAnchor());
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller){

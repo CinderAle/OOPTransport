@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class Truck extends GroundTransport {
     private Trailer trailer;
     private String trailerConnection;
@@ -19,6 +23,14 @@ public class Truck extends GroundTransport {
         super(controller);
         this.trailer = controller.objectTrailer;
         this.trailerConnection = controller.truckConnectionTextField.getText();
+    }
+
+    public AnchorPane initAnchor(){
+        GroundTransport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label connection = new Label("Connection type: " + this.trailerConnection);
+        anchor.getChildren().addAll(connection, new Label("Trailer: "), this.trailer.initAnchor());
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller) {

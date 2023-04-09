@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class Airplane extends AirTransport {
     private String airplaneClass;
     private int landings;
@@ -19,6 +23,15 @@ public class Airplane extends AirTransport {
         super(controller);
         this.airplaneClass = controller.airplaneClassTextField.getText();
         this.landings = Integer.parseInt(controller.airplaneLandingsTextField.getText());
+    }
+
+    public AnchorPane initAnchor(){
+        AirTransport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label airClass = new Label("Airplane class: " + this.airplaneClass);
+        Label landings = new Label("Landings: " + this.landings);
+        anchor.getChildren().addAll(airClass, landings);
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller) {

@@ -1,5 +1,8 @@
 package com.example.ooptransport;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class GroundTransport extends Transport {
@@ -53,6 +56,24 @@ public class GroundTransport extends Transport {
         this.soundSystem = controller.groundSoundTextField.getText();
         this.engine = controller.objectEngines[0];
         this.leftSided = controller.groundLeftSidedCheckbox.isSelected();
+    }
+
+    public AnchorPane initAnchor(){
+        Transport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label wheels = new Label("Wheels: " + this.wheels);
+        Label highway = new Label("Highway consumption: " + this.highwayConsumption);
+        Label city = new Label("City consumption: " + this.cityConsumption);
+        Label gears = new Label("Gears: " + this.gears);
+        Label wheelDrive = new Label("Wheel drive: " + this.wheelDrive);
+        Label gearboxType = new Label("Gearbox type: " + this.gearboxType);
+        Label gearManufacturer = new Label("Gearbox manufacturer: " + this.gearboxManufacturer);
+        Label soundSystem = new Label("Sound system: " + this.soundSystem);
+        Label leftSided = new Label("Left sided: " + (this.leftSided ? "yes" : "no"));
+        Label engineLabel = new Label("Engine:");
+        anchor.getChildren().addAll(wheels, highway, city, gears, wheelDrive, gearboxType, gearManufacturer, soundSystem, leftSided, engineLabel);
+        anchor.getChildren().add(this.engine.initAnchor());
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller){

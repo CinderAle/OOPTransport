@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class PassengerCar extends GroundTransport {
     public enum bodyTypes {Sedan, Coupe, Touring, Hatchback, Crossover, SUV};
     private bodyTypes bodyType;
@@ -31,6 +35,17 @@ public class PassengerCar extends GroundTransport {
         this.assembly = controller.passengerAssemblyTextField.getText();
         this.equipment = controller.passengerEquipmentTextField.getText();
         this.rimsRadius = Integer.parseInt(controller.passengerRimsRadiusTextField.getText());
+    }
+
+    public AnchorPane initAnchor(){
+        GroundTransport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label body = new Label("Body type: " + this.bodyType);
+        Label assembly = new Label("Assembly: " + this.assembly);
+        Label equipment = new Label("Equipment: " + this.equipment);
+        Label rims = new Label("Rims radius: " + this.rimsRadius);
+        anchor.getChildren().addAll(body, assembly, equipment, rims, new Label("Trailer:"),this.trailer.initAnchor());
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller){

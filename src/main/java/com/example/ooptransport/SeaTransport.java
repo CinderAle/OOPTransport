@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class SeaTransport extends Transport {
     protected int volumeDisplacement, normalDisplacement;
     protected Engine engine;
@@ -22,6 +26,16 @@ public class SeaTransport extends Transport {
         this.volumeDisplacement = Integer.parseInt(controller.seaVolumeDisplacementTextField.getText());
         this.normalDisplacement = Integer.parseInt(controller.seaNormalDisplacementTextField.getText());
         this.engine = controller.objectEngines[0];
+    }
+
+    public AnchorPane initAnchor(){
+        Transport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label volume = new Label("Volume displacement: " + this.volumeDisplacement);
+        Label normal = new Label("Normal displacement: " + this.normalDisplacement);
+        Label engineLabel = new Label("Engine:");
+        anchor.getChildren().addAll(volume, normal, engineLabel, this.engine.initAnchor());
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller) {

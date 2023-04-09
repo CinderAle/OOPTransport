@@ -1,4 +1,8 @@
 package com.example.ooptransport;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 public class Trailer extends Transport {
     private String trailerType;
     private int height, width;
@@ -14,6 +18,16 @@ public class Trailer extends Transport {
         this.trailerType = controller.trailerConnectionTextField.getText();
         this.height = Integer.parseInt(controller.trailerHeightField.getText());
         this.width = Integer.parseInt(controller.trailerWidthField.getText());
+    }
+
+    public AnchorPane initAnchor(){
+        Transport transport = this;
+        AnchorPane anchor = transport.initAnchor();
+        Label type = new Label("Connection type: " + this.trailerType);
+        Label width = new Label("Width: " + this.width);
+        Label height = new Label("Height: " + this.height);
+        anchor.getChildren().addAll(type, width, height);
+        return anchor;
     }
 
     public static boolean checkFields(TrailerWindowController controller){
