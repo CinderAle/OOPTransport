@@ -3,10 +3,11 @@ package com.example.ooptransport;
 import javafx.scene.control.TextField;
 
 public class Engine {
-    private int cylinders, horsepower, torque, volume;
+    private int cylinders, horsepower, torque;
+    private double volume;
     private String manufacturer;
 
-    public Engine(int cylinders, int horsepower, int torque, int volume, String manufacturer) {
+    public Engine(int cylinders, int horsepower, int torque, double volume, String manufacturer) {
         this.cylinders = cylinders;
         this.horsepower = horsepower;
         this.torque = torque;
@@ -16,6 +17,15 @@ public class Engine {
 
     public static boolean checkForEmpty(TextField tf) {
         return tf.getText().length() > 0;
+    }
+
+    public static Engine getFilled(EngineWindowController controller){
+        Engine engine = new Engine(Integer.parseInt(controller.cylindersTextField.getText()),
+                                    Integer.parseInt(controller.horsepowerTextField.getText()),
+                                    Integer.parseInt(controller.torqueTextField.getText()),
+                                    Double.parseDouble(controller.volumeTextField.getText()),
+                                    controller.manufacturerTextField.getText());
+        return engine;
     }
 
     public static boolean checkFields(EngineWindowController controller) {

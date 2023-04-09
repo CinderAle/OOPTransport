@@ -17,6 +17,14 @@ public class SeaTransport extends Transport {
         this.engine = null;
     }
 
+    public static SeaTransport getFilled(Controller controller) {
+        SeaTransport transport = (SeaTransport) Transport.getFilled(controller);
+        transport.volumeDisplacement = Integer.parseInt(controller.seaVolumeDisplacementTextField.getText());
+        transport.normalDisplacement = Integer.parseInt(controller.seaNormalDisplacementTextField.getText());
+        transport.engine = controller.objectEngines[0];
+        return transport;
+    }
+
     public static boolean checkFields(TrailerWindowController controller) {
         boolean isCorrect = Transport.checkFields(controller) && controller.objectEngines != null;
         if(isCorrect){

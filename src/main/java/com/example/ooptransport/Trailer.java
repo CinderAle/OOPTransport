@@ -10,6 +10,14 @@ public class Trailer extends Transport {
         this.width = width;
     }
 
+    public static Trailer getFilled(TrailerWindowController controller) {
+        Trailer trailer = (Trailer) Transport.getFilled(controller);
+        trailer.trailerType = controller.trailerConnectionTextField.getText();
+        trailer.height = Integer.parseInt(controller.trailerHeightField.getText());
+        trailer.width = Integer.parseInt(controller.trailerWidthField.getText());
+        return trailer;
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = Transport.checkFields(controller) && checkForEmpty(controller.trailerConnectionTextField.getText());
         if(isCorrect){

@@ -15,6 +15,13 @@ public class Airplane extends AirTransport {
         this.landings = 0;
     }
 
+    public static Airplane getFilled(Controller controller) {
+        Airplane airplane = (Airplane) AirTransport.getFilled(controller);
+        airplane.airplaneClass = controller.airplaneClassTextField.getText();
+        airplane.landings = Integer.parseInt(controller.airplaneLandingsTextField.getText());
+        return airplane;
+    }
+
     public static boolean checkFields(TrailerWindowController controller) {
         boolean isCorrect = AirTransport.checkFields(controller) &&
                             checkForEmpty(controller.airplaneClassTextField.getText());

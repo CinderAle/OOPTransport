@@ -66,8 +66,9 @@ public class Controller {
     public Button passengerTrailerButton;
     public Button truckTrailerButton;
     public TextField truckConnectionTextField;
-    Engine[] objectEngines;
-    Trailer objectTrailer;
+    public Engine[] objectEngines;
+    public Trailer objectTrailer;
+    boolean isChanging = false;
 
 
     public void hideSecondLevelPanes() {
@@ -101,13 +102,23 @@ public class Controller {
         });
     }
 
+    public void generateNewAccordItem() {
+
+    }
+
     public void addVehicle(MouseEvent mouseEvent) {
-        this.basicDataFieldsPane.setVisible(true);
-        setTransportComboBoxItems(this.vehicleTypeComboBox, observableArrayList(
-                new TransportFactory("Air transport", new AirTransport()),
-                new TransportFactory("Ground transport", new GroundTransport()),
-                new TransportFactory("Sea transport", new SeaTransport())
-        ));
+        if(!isChanging) {
+            this.basicDataFieldsPane.setVisible(true);
+            setTransportComboBoxItems(this.vehicleTypeComboBox, observableArrayList(
+                    new TransportFactory("Air transport", new AirTransport()),
+                    new TransportFactory("Ground transport", new GroundTransport()),
+                    new TransportFactory("Sea transport", new SeaTransport())
+            ));
+        }
+        else{
+
+        }
+        isChanging = !isChanging;
     }
 
     public void showEngineWindow(MouseEvent mouseEvent) throws IOException {

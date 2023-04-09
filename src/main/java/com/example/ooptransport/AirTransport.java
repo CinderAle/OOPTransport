@@ -20,6 +20,14 @@ public class AirTransport extends Transport {
         this.engines = null;
     }
 
+    public static AirTransport getFilled(Controller controller) {
+        AirTransport transport = (AirTransport)Transport.getFilled(controller);
+        transport.maxHeight = Integer.parseInt(controller.airMaxHeightTextField.getText());
+        transport.maxDistance = Integer.parseInt(controller.airMaxDistanceTextField.getText());
+        transport.engines = controller.objectEngines;
+        return transport;
+    }
+
     public static boolean checkFields(TrailerWindowController controller){
         boolean isCorrect = Transport.checkFields(controller) &&
                             controller.objectEngines != null;

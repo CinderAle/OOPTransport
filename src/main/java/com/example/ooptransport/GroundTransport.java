@@ -5,14 +5,15 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class GroundTransport extends Transport {
     public enum wheelDriveTypes {FWD, RWD, AWD};
     public enum gearboxTypes {Automatic, Manual, Selective, Robot};
-    protected int wheels, highwayConsumption, cityConsumption, gears;
+    protected int wheels, gears;
+    protected double highwayConsumption, cityConsumption;
     protected String gearboxManufacturer, soundSystem;
     protected wheelDriveTypes wheelDrive;
     protected gearboxTypes gearboxType;
     protected Engine engine;
     protected boolean leftSided;
 
-    public GroundTransport(String brand, String model, String color, String interior, String specifications, int seats, int manufactureYear, int mileage, int mass, int wheels, int highwayConsumption, int cityConsumption, int gears, wheelDriveTypes wheelDrive, gearboxTypes gearboxType, String gearboxManufacturer, String soundSystem, Engine engine, boolean leftSided) {
+    public GroundTransport(String brand, String model, String color, String interior, String specifications, int seats, int manufactureYear, int mileage, int mass, int wheels, double highwayConsumption, double cityConsumption, int gears, wheelDriveTypes wheelDrive, gearboxTypes gearboxType, String gearboxManufacturer, String soundSystem, Engine engine, boolean leftSided) {
         super(brand, model, color, interior, specifications, seats, manufactureYear, mileage, mass);
         this.wheels = wheels;
         this.highwayConsumption = highwayConsumption;
@@ -38,6 +39,21 @@ public class GroundTransport extends Transport {
         this.soundSystem = null;
         this.engine = null;
         this.leftSided = true;
+    }
+
+    public static GroundTransport getFilled(Controller controller) {
+        GroundTransport transport = (GroundTransport) Transport.getFilled(controller);
+        transport.wheels = Integer.parseInt(controller.groundWheelsTextField.getText());
+        transport.highwayConsumption = Double.parseDouble(controller.groundHighwayTextField.getText());
+        transport.cityConsumption = Double.parseDouble(controller.groundCityTextField.getText());
+        transport.gears = Integer.parseInt(controller.groundGearsTextField.getText());
+        transport.wheelDrive = controller.groundWheelDriveComboBox.getValue();
+        transport.gearboxType = controller.groundGearboxComboBox.getValue();
+        transport.gearboxManufacturer = controller.groundGearboxManTextField.getText();
+        transport.soundSystem = controller.groundSoundTextField.getText();
+        transport.engine = controller.objectEngines[0];
+        transport.leftSided = controller.groundLeftSidedCheckbox.isSelected();
+        return transport;
     }
 
     public static boolean checkFields(TrailerWindowController controller){

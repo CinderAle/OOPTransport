@@ -15,6 +15,15 @@ public class Transport {
         this.mass = mass;
     }
 
+    public static Transport getFilled(Controller controller){
+        Transport transport = new Transport(controller.brandTextBox.getText(), controller.modelTextField.getText(),
+                                            controller.colorTextField.getText(), controller.interiorTextField.getText(),
+                                            controller.specificationsTextArea.getText(), Integer.parseInt(controller.seatsTextField.getText()),
+                                            Integer.parseInt(controller.yearTextField.getText()), Integer.parseInt(controller.mileageTextField.getText()),
+                                            Integer.parseInt(controller.massTextField.getText()));
+        return transport;
+    }
+
     protected static boolean checkForEmpty(String line) {
         return line.length() > 0;
     }

@@ -15,6 +15,13 @@ public class Helicopter extends AirTransport {
         this.rotorsType = null;
     }
 
+    public static Helicopter getFilled(Controller controller) {
+        Helicopter helicopter = (Helicopter) AirTransport.getFilled(controller);
+        helicopter.blades = Integer.parseInt(controller.helicopterBladesTextField.getText());
+        helicopter.rotorsType = controller.helicopterRotorsTypeTextField.getText();
+        return helicopter;
+    }
+
     public static boolean checkFields(TrailerWindowController controller) {
         boolean isCorrect = AirTransport.checkFields(controller) &&
                             checkForEmpty(controller.helicopterRotorsTypeTextField.getText());
