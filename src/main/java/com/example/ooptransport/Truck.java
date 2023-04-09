@@ -15,6 +15,13 @@ public class Truck extends GroundTransport {
         this.trailerConnection = null;
     }
 
+    public static boolean checkFields(TrailerWindowController controller) {
+        boolean isCorrect = GroundTransport.checkFields(controller) &&
+                            checkForEmpty(controller.truckConnectionTextField.getText()) &&
+                            controller.objectTrailer != null;
+        return isCorrect;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideThirdLevelPanes();

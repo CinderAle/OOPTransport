@@ -40,6 +40,28 @@ public class GroundTransport extends Transport {
         this.leftSided = true;
     }
 
+    public static boolean checkFields(TrailerWindowController controller){
+        boolean isCorrect = Transport.checkFields(controller) &&
+                            controller.objectEngines != null &&
+                            checkForEmpty(controller.groundSoundTextField.getText()) &&
+                            checkForEmpty(controller.groundGearboxManTextField.getText()) &&
+                            controller.groundWheelDriveComboBox.getValue() != null &&
+                            controller.groundGearboxComboBox.getValue() != null;
+        if(isCorrect){
+            try{
+                Integer.parseInt(controller.groundWheelsTextField.getText());
+                Double.parseDouble(controller.groundHighwayTextField.getText());
+                Double.parseDouble(controller.groundCityTextField.getText());
+            }
+            catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideSecondLevelPanes();

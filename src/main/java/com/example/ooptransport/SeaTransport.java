@@ -17,6 +17,21 @@ public class SeaTransport extends Transport {
         this.engine = null;
     }
 
+    public static boolean checkFields(TrailerWindowController controller) {
+        boolean isCorrect = Transport.checkFields(controller) && controller.objectEngines != null;
+        if(isCorrect){
+            try{
+                Double.parseDouble(controller.seaNormalDisplacementTextField.getText());
+                Double.parseDouble(controller.seaVolumeDisplacementTextField.getText());
+            }
+            catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideSecondLevelPanes();

@@ -14,6 +14,23 @@ public class Helicopter extends AirTransport {
         this.blades = 0;
         this.rotorsType = null;
     }
+
+    public static boolean checkFields(TrailerWindowController controller) {
+        boolean isCorrect = AirTransport.checkFields(controller) &&
+                            checkForEmpty(controller.helicopterRotorsTypeTextField.getText());
+        if (isCorrect){
+            try{
+                Integer.parseInt(controller.helicopterRotorsTypeTextField.getText());
+            }
+            catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideThirdLevelPanes();

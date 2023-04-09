@@ -20,6 +20,23 @@ public class AirTransport extends Transport {
         this.engines = null;
     }
 
+    public static boolean checkFields(TrailerWindowController controller){
+        boolean isCorrect = Transport.checkFields(controller) &&
+                            controller.objectEngines != null;
+        if(isCorrect){
+            try{
+                Integer.parseInt(controller.airMaxDistanceTextField.getText());
+                Integer.parseInt(controller.airMaxHeightTextField.getText());
+            }
+            catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideSecondLevelPanes();

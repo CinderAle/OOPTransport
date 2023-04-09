@@ -24,6 +24,24 @@ public class PassengerCar extends GroundTransport {
         this.trailer = null;
     }
 
+    public static boolean checkFields(TrailerWindowController controller){
+        boolean isCorrect = GroundTransport.checkFields(controller) &&
+                            checkForEmpty(controller.passengerAssemblyTextField.getText()) &&
+                            checkForEmpty(controller.passengerEquipmentTextField.getText()) &&
+                            controller.passengerBodyTypeComboBox.getValue() != null;
+        if(isCorrect){
+            try{
+                Integer.parseInt(controller.passengerRimsRadiusTextField.getText());
+            }
+            catch (Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideThirdLevelPanes();

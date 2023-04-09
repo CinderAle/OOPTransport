@@ -14,6 +14,23 @@ public class Airplane extends AirTransport {
         this.airplaneClass = null;
         this.landings = 0;
     }
+
+    public static boolean checkFields(TrailerWindowController controller) {
+        boolean isCorrect = AirTransport.checkFields(controller) &&
+                            checkForEmpty(controller.airplaneClassTextField.getText());
+        if(isCorrect){
+            try{
+                Integer.parseInt(controller.airplaneLandingsTextField.getText());
+            }
+            catch (Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
         controller.hideThirdLevelPanes();

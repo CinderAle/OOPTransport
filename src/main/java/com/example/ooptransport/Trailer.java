@@ -10,6 +10,22 @@ public class Trailer extends Transport {
         this.width = width;
     }
 
+    public static boolean checkFields(TrailerWindowController controller){
+        boolean isCorrect = Transport.checkFields(controller) && checkForEmpty(controller.trailerConnectionTextField.getText());
+        if(isCorrect){
+            try{
+                Integer.parseInt(controller.trailerWidthField.getText());
+                Integer.parseInt(controller.trailerHeightField.getText());
+            }
+            catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     public void generateFields(Controller controller) {
 
