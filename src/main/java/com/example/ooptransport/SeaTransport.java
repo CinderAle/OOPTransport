@@ -25,7 +25,7 @@ public class SeaTransport extends Transport {
         super(controller);
         this.volumeDisplacement = Integer.parseInt(controller.seaVolumeDisplacementTextField.getText());
         this.normalDisplacement = Integer.parseInt(controller.seaNormalDisplacementTextField.getText());
-        this.engine = controller.objectEngines[0];
+        this.engine = controller.objectEngines.clone()[0];
     }
 
     @Override
@@ -36,6 +36,7 @@ public class SeaTransport extends Transport {
         Label engineLabel = addLabelWithPos("Engine:");
         this.engine.setLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(volume, normal, engineLabel, this.engine.initAnchor());
+        setLabelsYStart(this.engine.getLabelsYStart());
         return anchor;
     }
 

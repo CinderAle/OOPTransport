@@ -54,7 +54,7 @@ public class GroundTransport extends Transport {
         this.gearboxType = controller.groundGearboxComboBox.getValue();
         this.gearboxManufacturer = controller.groundGearboxManTextField.getText();
         this.soundSystem = controller.groundSoundTextField.getText();
-        this.engine = controller.objectEngines[0];
+        this.engine = controller.objectEngines.clone()[0];
         this.leftSided = controller.groundLeftSidedCheckbox.isSelected();
     }
 
@@ -73,6 +73,7 @@ public class GroundTransport extends Transport {
         this.engine.setLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(wheels, highway, city, gears, wheelDrive, gearboxType, gearManufacturer, soundSystem, leftSided, engineLabel);
         anchor.getChildren().add(this.engine.initAnchor());
+        setLabelsYStart(this.engine.getLabelsYStart());
         return anchor;
     }
 
@@ -124,14 +125,23 @@ public class GroundTransport extends Transport {
         super.generateFields(controller);
         if(controller.vehicleTypeComboBox.getValue() == null)
             controller.vehicleTypeComboBox.setValue(new TransportFactory("Ground transport", new GroundTransport()));
+        if(controller.objectEngines != null)
+            this.engine = controller.objectEngines[0];
         controller.hideSecondLevelPanes();
+        if(this.engine != null) {
+            controller.objectEngines = new Engine[1];
+            controller.objectEngines[0] = this.engine;
+        }
         controller.hideThirdLevelPanes();
         controller.groundTransportPane.setVisible(true);
-        controller.setTransportComboBoxItems(controller.groundTypeComboBox, observableArrayList(
+        if(controller.groundTypeComboBox.getValue() == null)
+            controller.setTransportComboBoxItems(controller.groundTypeComboBox, observableArrayList(
                 new TransportFactory("Passenger car", new PassengerCar()),
                 new TransportFactory("Truck", new Truck())
-        ));
-        controller.groundWheelDriveComboBox.getItems().setAll(wheelDriveTypes.values());
-        controller.groundGearboxComboBox.getItems().setAll(gearboxTypes.values());
+            ));
+        if(controller.groundWheelDriveComboBox.getValue() == null)
+            controller.groundWheelDriveComboBox.getItems().setAll(wheelDriveTypes.values());
+        if(controller.groundGearboxComboBox.getValue() == null)
+            controller.groundGearboxComboBox.getItems().setAll(gearboxTypes.values());
     }
 }

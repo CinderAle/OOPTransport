@@ -45,12 +45,14 @@ public class Engine {
 
     public AnchorPane initAnchor(){
         AnchorPane anchor = new AnchorPane();
-        Label cylinderLabel = addLabelWithPos("Cylinder: " + Integer.toString(this.cylinders));
-        Label horsepowerLabel = addLabelWithPos("Horsepower: " + Integer.toString(this.horsepower));
-        Label torqueLabel = addLabelWithPos("Torque: " + Integer.toString(this.torque));
-        Label volumeLabel = addLabelWithPos("Volume: " + Double.toString(this.volume));
+        Label dividerStart = addLabelWithPos("------------------------------------------------");
+        Label cylinderLabel = addLabelWithPos("Cylinders: " + Integer.toString(this.cylinders));
+        Label horsepowerLabel = addLabelWithPos("Horsepower, hp: " + Integer.toString(this.horsepower));
+        Label torqueLabel = addLabelWithPos("Torque, nm: " + Integer.toString(this.torque));
+        Label volumeLabel = addLabelWithPos("Volume, l: " + Double.toString(this.volume));
         Label manLabel = addLabelWithPos("Manufacturer: " + this.manufacturer);
-        anchor.getChildren().addAll(cylinderLabel, horsepowerLabel, torqueLabel, volumeLabel, manLabel);
+        Label dividerEnd = addLabelWithPos("------------------------------------------------");
+        anchor.getChildren().addAll(dividerStart, cylinderLabel, horsepowerLabel, torqueLabel, volumeLabel, manLabel, dividerEnd);
         return anchor;
     }
 

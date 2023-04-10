@@ -6,13 +6,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.example.ooptransport.NumberField?>
+<?import com.example.ooptransport.LimitedField?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="back" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooptransport.TrailerWindowController">
    <children>
       <Button fx:id="trailerCancelButton" cancelButton="true" layoutX="264.0" layoutY="305.0" mnemonicParsing="false" onAction="#closeTrailerWindow" prefHeight="25.0" prefWidth="95.0" text="Cancel" />
       <Button fx:id="trailerAddButton" layoutX="372.0" layoutY="305.0" mnemonicParsing="false" onAction="#addTrailer" prefHeight="25.0" prefWidth="107.0" text="Add" />
-      <TextField fx:id="trailerWidthField" layoutX="264.0" layoutY="217.0" prefHeight="25.0" prefWidth="95.0" promptText="Width" />
-      <TextField fx:id="trailerHeightField" layoutX="372.0" layoutY="217.0" prefHeight="25.0" prefWidth="107.0" promptText="Height" />
-      <TextField fx:id="trailerConnectionTextField" layoutX="22.0" layoutY="266.0" prefHeight="25.0" prefWidth="457.0" promptText="Trailer connection" />
+      <NumberField fx:id="trailerWidthField" layoutX="264.0" layoutY="217.0" prefHeight="25.0" prefWidth="95.0" promptText="Width" maxLength="4"/>
+      <NumberField fx:id="trailerHeightField" layoutX="372.0" layoutY="217.0" prefHeight="25.0" prefWidth="107.0" promptText="Height" maxLength="3"/>
+      <LimitedField fx:id="trailerConnectionTextField" layoutX="22.0" layoutY="266.0" prefHeight="25.0" prefWidth="457.0" promptText="Trailer connection" maxLength="32"/>
       <Label layoutX="23.0" layoutY="247.0" text="Trailer connection" />
       <Label layoutX="265.0" layoutY="199.0" text="Width, cm" />
       <Label layoutX="372.0" layoutY="199.0" text="Height, cm" />
@@ -26,13 +28,13 @@
       <Label layoutX="265.0" layoutY="14.0" text="Model" />
       <Label layoutX="22.0" layoutY="18.0" text="Brand" />
       <TextArea fx:id="specificationsTextArea" layoutX="22.0" layoutY="123.0" prefHeight="121.0" prefWidth="212.0" promptText="Specifications" />
-      <TextField fx:id="yearTextField" layoutX="372.0" layoutY="125.0" prefHeight="25.0" prefWidth="107.0" promptText="Year" />
-      <TextField fx:id="massTextField" layoutX="266.0" layoutY="172.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass" />
-      <TextField fx:id="mileageTextField" layoutX="372.0" layoutY="172.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage" />
-      <TextField fx:id="seatsTextField" layoutX="265.0" layoutY="125.0" prefHeight="25.0" prefWidth="95.0" promptText="Seats" />
-      <TextField fx:id="interiorTextField" layoutX="266.0" layoutY="79.0" prefHeight="25.0" prefWidth="212.0" promptText="Interior" />
-      <TextField fx:id="colorTextField" layoutX="22.0" layoutY="79.0" prefHeight="25.0" prefWidth="212.0" promptText="Color" />
-      <TextField fx:id="modelTextField" layoutX="266.0" layoutY="37.0" prefHeight="25.0" prefWidth="212.0" promptText="Model" />
-      <TextField fx:id="brandTextBox" layoutX="22.0" layoutY="37.0" prefHeight="25.0" prefWidth="212.0" promptText="Brand" />
+      <NumberField fx:id="yearTextField" layoutX="372.0" layoutY="125.0" prefHeight="25.0" prefWidth="107.0" promptText="Year" maxLength="4"/>
+      <NumberField fx:id="massTextField" layoutX="266.0" layoutY="172.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass" maxLength="5"/>
+      <NumberField fx:id="mileageTextField" layoutX="372.0" layoutY="172.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage" maxLength="7"/>
+      <NumberField fx:id="seatsTextField" layoutX="265.0" layoutY="125.0" prefHeight="25.0" prefWidth="95.0" promptText="Seats" maxLength="3"/>
+      <LimitedField fx:id="interiorTextField" layoutX="266.0" layoutY="79.0" prefHeight="25.0" prefWidth="212.0" promptText="Interior" maxLength="24"/>
+      <LimitedField fx:id="colorTextField" layoutX="22.0" layoutY="79.0" prefHeight="25.0" prefWidth="212.0" promptText="Color" maxLength="24"/>
+      <LimitedField fx:id="modelTextField" layoutX="266.0" layoutY="37.0" prefHeight="25.0" prefWidth="212.0" promptText="Model" maxLength="24"/>
+      <LimitedField fx:id="brandTextBox" layoutX="22.0" layoutY="37.0" prefHeight="25.0" prefWidth="212.0" promptText="Brand" maxLength="24"/>
    </children>
 </Pane>

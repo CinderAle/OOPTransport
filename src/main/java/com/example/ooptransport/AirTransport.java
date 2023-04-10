@@ -27,7 +27,7 @@ public class AirTransport extends Transport {
         super(controller);
         this.maxHeight = Integer.parseInt(controller.airMaxHeightTextField.getText());
         this.maxDistance = Integer.parseInt(controller.airMaxDistanceTextField.getText());
-        this.engines = controller.objectEngines;
+        this.engines = controller.objectEngines.clone();
     }
 
     public AnchorPane initAnchor(){
@@ -52,14 +52,14 @@ public class AirTransport extends Transport {
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Air transport", new AirTransport()));
         controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
         controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
-        controller.objectEngines = this.engines;
+        controller.objectEngines = this.engines.clone();
         controller.addEngineAccord();
     }
 
     public boolean checkFields(Controller controller){
         Transport transport = new Transport();
         boolean isCorrect = transport.checkFields(controller) &&
-                            controller.objectEngines != null;
+                            controller.objectEngines != null && controller.objectEngines.length > 0;
         if(isCorrect){
             try{
                 Integer.parseInt(controller.airMaxDistanceTextField.getText());
@@ -82,9 +82,10 @@ public class AirTransport extends Transport {
         controller.hideSecondLevelPanes();
         controller.hideThirdLevelPanes();
         controller.airTransportPane.setVisible(true);
-        controller.setTransportComboBoxItems(controller.airTransportTypeComboBox, observableArrayList(
+        if(controller.airTransportTypeComboBox.getValue() == null)
+            controller.setTransportComboBoxItems(controller.airTransportTypeComboBox, observableArrayList(
                 new TransportFactory("Airplane", new Airplane()),
                 new TransportFactory("Helicopter", new Helicopter())
-        ));
+            ));
     }
 }

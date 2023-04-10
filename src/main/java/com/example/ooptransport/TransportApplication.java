@@ -15,6 +15,7 @@ public class TransportApplication extends Application {
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setTitle("Transport editor");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

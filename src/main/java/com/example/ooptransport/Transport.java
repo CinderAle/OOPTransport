@@ -148,8 +148,8 @@ public class Transport {
                     int id = controller.objectsAccordion.getPanes().indexOf(tp);
                     controller.objectsAccordion.getPanes().remove(id);
                     controller.isChanging = true;
-                    controller.allTransport.get(id).generateFields(controller);
                     controller.allTransport.get(id).setFields(controller);
+                    controller.allTransport.get(id).generateFields(controller);
                     controller.allTransport.remove(id);
                 }
             });

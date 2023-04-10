@@ -5,10 +5,11 @@ import javafx.scene.layout.AnchorPane;
 
 public class PassengerCar extends GroundTransport {
     public enum bodyTypes {Sedan, Coupe, Touring, Hatchback, Crossover, SUV};
-    private bodyTypes bodyType;
-    private String assembly, equipment;
-    private int rimsRadius;
-    private Trailer trailer;
+    private final bodyTypes bodyType;
+    private final String assembly;
+    private final String equipment;
+    private final int rimsRadius;
+    private final Trailer trailer;
 
     public PassengerCar(String brand, String model, String color, String interior, String specifications, int seats, int manufactureYear, int mileage, int mass, int wheels, int highwayConsumption, int cityConsumption, int gears, wheelDriveTypes wheelDrive, gearboxTypes gearboxType, String gearboxManufacturer, String soundSystem, Engine engine, boolean leftSided, bodyTypes bodyType, String assembly, String equipment, int rimsRadius, Trailer trailer) {
         super(brand, model, color, interior, specifications, seats, manufactureYear, mileage, mass, wheels, highwayConsumption, cityConsumption, gears, wheelDrive, gearboxType, gearboxManufacturer, soundSystem, engine, leftSided);
@@ -44,7 +45,8 @@ public class PassengerCar extends GroundTransport {
         Label equipment = addLabelWithPos("Equipment: " + this.equipment);
         Label rims = addLabelWithPos("Rims radius: " + this.rimsRadius);
         anchor.getChildren().addAll(body, assembly, equipment, rims, addLabelWithPos("Trailer:"));
-        this.trailer.setLabelsYStart(labelsYStart);
+        if(this.trailer != null)
+            this.trailer.setLabelsYStart(labelsYStart);
         anchor.getChildren().add(this.trailer != null ? this.trailer.initAnchor() : addLabelWithPos("None"));
         return anchor;
     }
@@ -89,6 +91,7 @@ public class PassengerCar extends GroundTransport {
             controller.groundTypeComboBox.setValue(new TransportFactory("Car", new PassengerCar()));
         controller.hideThirdLevelPanes();
         controller.passengerCarPane.setVisible(true);
-        controller.passengerBodyTypeComboBox.getItems().setAll(bodyTypes.values());
+        if(controller.passengerBodyTypeComboBox.getValue() == null)
+            controller.passengerBodyTypeComboBox.getItems().setAll(bodyTypes.values());
     }
 }
