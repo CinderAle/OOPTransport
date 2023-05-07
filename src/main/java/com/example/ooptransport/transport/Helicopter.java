@@ -41,8 +41,8 @@ public class Helicopter extends AirTransport implements Serializable {
         return new Helicopter(controller);
     }
 
-    public void setFields(Controller controller) {
-        super.setFields(controller);
+    public void completeFields(Controller controller) {
+        super.completeFields(controller);
         controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Helicopter", new Helicopter()));
         controller.helicopterBladesTextField.setText(Integer.toString(this.blades));
         controller.helicopterRotorsTypeTextField.setText(this.rotorsType);
@@ -74,5 +74,21 @@ public class Helicopter extends AirTransport implements Serializable {
             controller.airTransportTypeComboBox.setValue(new TransportFactory("Helicopter", new Helicopter()));
         controller.hideThirdLevelPanes();
         controller.helicopterPane.setVisible(true);
+    }
+
+    public int getBlades() {
+        return blades;
+    }
+
+    public void setBlades(int blades) {
+        this.blades = blades;
+    }
+
+    public String getRotorsType() {
+        return rotorsType;
+    }
+
+    public void setRotorsType(String rotorsType) {
+        this.rotorsType = rotorsType;
     }
 }

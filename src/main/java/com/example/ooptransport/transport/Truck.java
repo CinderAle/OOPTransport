@@ -29,8 +29,8 @@ public class Truck extends GroundTransport implements Serializable {
         this.trailerConnection = controller.truckConnectionTextField.getText();
     }
 
-    public void setFields(Controller controller) {
-        super.setFields(controller);
+    public void completeFields(Controller controller) {
+        super.completeFields(controller);
         controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Truck", new Truck()));
         controller.truckConnectionTextField.setText(this.trailerConnection);
         controller.objectTrailer = this.trailer;
@@ -63,5 +63,21 @@ public class Truck extends GroundTransport implements Serializable {
             controller.groundTypeComboBox.setValue(new TransportFactory("Truck", new Truck()));
         controller.hideThirdLevelPanes();
         controller.truckPane.setVisible(true);
+    }
+
+    public Trailer getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(Trailer trailer) {
+        this.trailer = trailer;
+    }
+
+    public String getTrailerConnection() {
+        return trailerConnection;
+    }
+
+    public void setTrailerConnection(String trailerConnection) {
+        this.trailerConnection = trailerConnection;
     }
 }

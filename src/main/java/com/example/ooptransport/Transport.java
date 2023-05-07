@@ -61,16 +61,16 @@ public class Transport implements Serializable {
         Label model = addLabelWithPos("Model: " + this.model);
         Label color = addLabelWithPos("Color: " + this.color);
         Label interior = addLabelWithPos("Interior: " + this.interior);
-        Label seats = addLabelWithPos("Seats: " + Integer.toString(this.seats));
-        Label year = addLabelWithPos("Year: " + Integer.toString(this.manufactureYear));
-        Label miles = addLabelWithPos("Miles: " + Integer.toString(this.mileage));
-        Label mass = addLabelWithPos("Mass: " + Integer.toString(this.mass));
+        Label seats = addLabelWithPos("Seats: " + this.seats);
+        Label year = addLabelWithPos("Year: " + this.manufactureYear);
+        Label miles = addLabelWithPos("Miles: " + this.mileage);
+        Label mass = addLabelWithPos("Mass: " + this.mass);
         Label specifications = addLabelWithPos("Specifications: " + this.specifications);
         anchor.getChildren().addAll(brand, model, color, interior, specifications, seats, year, miles, mass);
         return anchor;
     }
 
-    public void setFields(Controller controller){
+    public void completeFields(Controller controller){
         controller.brandTextBox.setText(this.brand);
         controller.modelTextField.setText(this.model);
         controller.colorTextField.setText(this.color);
@@ -147,7 +147,7 @@ public class Transport implements Serializable {
                     int id = controller.objectsAccordion.getPanes().indexOf(tp);
                     controller.objectsAccordion.getPanes().remove(id);
                     controller.isChanging = true;
-                    controller.allTransport.get(id).setFields(controller);
+                    controller.allTransport.get(id).completeFields(controller);
                     controller.allTransport.get(id).generateFields(controller);
                     controller.allTransport.remove(id);
                 }
@@ -155,5 +155,77 @@ public class Transport implements Serializable {
             getItems().add(edit);
             getItems().add(delete);
         }
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setInterior(String interior) {
+        this.interior = interior;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
+    public void setManufactureYear(int manufactureYear) {
+        this.manufactureYear = manufactureYear;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
+
+    public void setMass(int mass) {
+        this.mass = mass;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getInterior() {
+        return interior;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public int getManufactureYear() {
+        return manufactureYear;
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public int getMass() {
+        return mass;
     }
 }

@@ -84,8 +84,8 @@ public class GroundTransport extends Transport {
         return new GroundTransport(controller);
     }
 
-    public void setFields(Controller controller){
-        super.setFields(controller);
+    public void completeFields(Controller controller){
+        super.completeFields(controller);
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Ground transport", new GroundTransport()));
         controller.groundWheelsTextField.setText(Integer.toString(this.wheels));
         controller.groundHighwayTextField.setText(Double.toString(this.highwayConsumption));
@@ -146,5 +146,85 @@ public class GroundTransport extends Transport {
             controller.groundWheelDriveComboBox.getItems().setAll(wheelDriveTypes.values());
         if(controller.groundGearboxComboBox.getValue() == null)
             controller.groundGearboxComboBox.getItems().setAll(gearboxTypes.values());
+    }
+
+    public int getWheels() {
+        return wheels;
+    }
+
+    public void setWheels(int wheels) {
+        this.wheels = wheels;
+    }
+
+    public int getGears() {
+        return gears;
+    }
+
+    public void setGears(int gears) {
+        this.gears = gears;
+    }
+
+    public double getHighwayConsumption() {
+        return highwayConsumption;
+    }
+
+    public void setHighwayConsumption(double highwayConsumption) {
+        this.highwayConsumption = highwayConsumption;
+    }
+
+    public double getCityConsumption() {
+        return cityConsumption;
+    }
+
+    public void setCityConsumption(double cityConsumption) {
+        this.cityConsumption = cityConsumption;
+    }
+
+    public String getGearboxManufacturer() {
+        return gearboxManufacturer;
+    }
+
+    public void setGearboxManufacturer(String gearboxManufacturer) {
+        this.gearboxManufacturer = gearboxManufacturer;
+    }
+
+    public String getSoundSystem() {
+        return soundSystem;
+    }
+
+    public void setSoundSystem(String soundSystem) {
+        this.soundSystem = soundSystem;
+    }
+
+    public wheelDriveTypes getWheelDrive() {
+        return wheelDrive;
+    }
+
+    public void setWheelDrive(wheelDriveTypes wheelDrive) {
+        this.wheelDrive = wheelDrive;
+    }
+
+    public gearboxTypes getGearboxType() {
+        return gearboxType;
+    }
+
+    public void setGearboxType(gearboxTypes gearboxType) {
+        this.gearboxType = gearboxType;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public boolean isLeftSided() {
+        return leftSided;
+    }
+
+    public void setLeftSided(boolean leftSided) {
+        this.leftSided = leftSided;
     }
 }

@@ -43,7 +43,7 @@ public class Trailer extends Transport implements Serializable {
 
     public void setFields(TrailerWindowController controller){
         Transport transport = this;
-        transport.setFields(controller);
+        transport.completeFields(controller);
         controller.trailerConnectionTextField.setText(this.trailerType);
         controller.trailerWidthField.setText(Integer.toString(this.width));
         controller.trailerHeightField.setText(Integer.toString(this.height));
@@ -66,8 +66,27 @@ public class Trailer extends Transport implements Serializable {
             return false;
     }
 
-    @Override
-    public void generateFields(Controller controller) {
+    public String getTrailerType() {
+        return trailerType;
+    }
 
+    public void setTrailerType(String trailerType) {
+        this.trailerType = trailerType;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

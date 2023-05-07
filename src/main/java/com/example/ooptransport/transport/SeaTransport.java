@@ -49,8 +49,8 @@ public class SeaTransport extends Transport implements Serializable {
         return new SeaTransport(controller);
     }
 
-    public void setFields(Controller controller){
-        super.setFields(controller);
+    public void completeFields(Controller controller){
+        super.completeFields(controller);
         controller.seaVolumeDisplacementTextField.setText(Integer.toString(this.volumeDisplacement));
         controller.seaNormalDisplacementTextField.setText(Integer.toString(this.normalDisplacement));
         controller.objectEngines = new Engine[1];
@@ -81,5 +81,29 @@ public class SeaTransport extends Transport implements Serializable {
         controller.hideSecondLevelPanes();
         controller.hideThirdLevelPanes();
         controller.seaTransportPane.setVisible(true);
+    }
+
+    public int getVolumeDisplacement() {
+        return volumeDisplacement;
+    }
+
+    public void setVolumeDisplacement(int volumeDisplacement) {
+        this.volumeDisplacement = volumeDisplacement;
+    }
+
+    public int getNormalDisplacement() {
+        return normalDisplacement;
+    }
+
+    public void setNormalDisplacement(int normalDisplacement) {
+        this.normalDisplacement = normalDisplacement;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 }

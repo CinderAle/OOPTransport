@@ -41,8 +41,8 @@ public class Airplane extends AirTransport implements Serializable {
         return new Airplane(controller);
     }
 
-    public void setFields(Controller controller) {
-        super.setFields(controller);
+    public void completeFields(Controller controller) {
+        super.completeFields(controller);
         controller.airTransportTypeComboBox.getSelectionModel().select(new TransportFactory("Airplane", new Airplane()));
         controller.airplaneClassTextField.setText(this.airplaneClass);
         controller.airplaneLandingsTextField.setText(Integer.toString(this.landings));
@@ -74,5 +74,21 @@ public class Airplane extends AirTransport implements Serializable {
             controller.airTransportTypeComboBox.setValue(new TransportFactory("Airplane", new Airplane()));
         controller.hideThirdLevelPanes();
         controller.airplanePane.setVisible(true);
+    }
+
+    public String getAirplaneClass() {
+        return airplaneClass;
+    }
+
+    public void setAirplaneClass(String airplaneClass) {
+        this.airplaneClass = airplaneClass;
+    }
+
+    public int getLandings() {
+        return landings;
+    }
+
+    public void setLandings(int landings) {
+        this.landings = landings;
     }
 }

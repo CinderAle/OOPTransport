@@ -9,11 +9,11 @@ import java.io.Serializable;
 
 public class PassengerCar extends GroundTransport implements Serializable {
     public enum bodyTypes {Sedan, Coupe, Touring, Hatchback, Crossover, SUV};
-    private final bodyTypes bodyType;
-    private final String assembly;
-    private final String equipment;
-    private final int rimsRadius;
-    private final Trailer trailer;
+    private bodyTypes bodyType;
+    private String assembly;
+    private String equipment;
+    private int rimsRadius;
+    private Trailer trailer;
 
     public PassengerCar(String brand, String model, String color, String interior, String specifications, int seats, int manufactureYear, int mileage, int mass, int wheels, int highwayConsumption, int cityConsumption, int gears, wheelDriveTypes wheelDrive, gearboxTypes gearboxType, String gearboxManufacturer, String soundSystem, Engine engine, boolean leftSided, bodyTypes bodyType, String assembly, String equipment, int rimsRadius, Trailer trailer) {
         super(brand, model, color, interior, specifications, seats, manufactureYear, mileage, mass, wheels, highwayConsumption, cityConsumption, gears, wheelDrive, gearboxType, gearboxManufacturer, soundSystem, engine, leftSided);
@@ -59,8 +59,8 @@ public class PassengerCar extends GroundTransport implements Serializable {
         return new PassengerCar(controller);
     }
 
-    public void setFields(Controller controller) {
-        super.setFields(controller);
+    public void completeFields(Controller controller) {
+        super.completeFields(controller);
         controller.groundTypeComboBox.getSelectionModel().select(new TransportFactory("Car", new PassengerCar()));
         controller.passengerBodyTypeComboBox.getSelectionModel().select(this.bodyType);
         controller.passengerAssemblyTextField.setText(this.assembly);
@@ -97,5 +97,45 @@ public class PassengerCar extends GroundTransport implements Serializable {
         controller.passengerCarPane.setVisible(true);
         if(controller.passengerBodyTypeComboBox.getValue() == null)
             controller.passengerBodyTypeComboBox.getItems().setAll(bodyTypes.values());
+    }
+
+    public bodyTypes getBodyType() {
+        return bodyType;
+    }
+
+    public String getAssembly() {
+        return assembly;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+
+    public int getRimsRadius() {
+        return rimsRadius;
+    }
+
+    public Trailer getTrailer() {
+        return trailer;
+    }
+
+    public void setBodyType(bodyTypes bodyType) {
+        this.bodyType = bodyType;
+    }
+
+    public void setAssembly(String assembly) {
+        this.assembly = assembly;
+    }
+
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
+    }
+
+    public void setRimsRadius(int rimsRadius) {
+        this.rimsRadius = rimsRadius;
+    }
+
+    public void setTrailer(Trailer trailer) {
+        this.trailer = trailer;
     }
 }

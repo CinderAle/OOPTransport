@@ -49,8 +49,8 @@ public class AirTransport extends Transport {
         return new AirTransport(controller);
     }
 
-    public void setFields(Controller controller){
-        super.setFields(controller);
+    public void completeFields(Controller controller){
+        super.completeFields(controller);
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Air transport", new AirTransport()));
         controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
         controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
@@ -89,5 +89,29 @@ public class AirTransport extends Transport {
                 new TransportFactory("Airplane", new Airplane()),
                 new TransportFactory("Helicopter", new Helicopter())
             ));
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+    }
+
+    public int getMaxDistance() {
+        return maxDistance;
+    }
+
+    public void setMaxDistance(int maxDistance) {
+        this.maxDistance = maxDistance;
+    }
+
+    public Engine[] getEngines() {
+        return engines;
+    }
+
+    public void setEngines(Engine[] engines) {
+        this.engines = engines;
     }
 }
