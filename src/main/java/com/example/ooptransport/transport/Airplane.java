@@ -1,9 +1,13 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class Airplane extends AirTransport {
+import java.io.Serializable;
+
+public class Airplane extends AirTransport implements Serializable {
     private String airplaneClass;
     private int landings;
 

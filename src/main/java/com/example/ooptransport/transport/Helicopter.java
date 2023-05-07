@@ -1,9 +1,13 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class Helicopter extends AirTransport {
+import java.io.Serializable;
+
+public class Helicopter extends AirTransport implements Serializable {
     private int blades;
     private String rotorsType;
 

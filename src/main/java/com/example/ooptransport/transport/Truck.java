@@ -1,9 +1,13 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class Truck extends GroundTransport {
+import java.io.Serializable;
+
+public class Truck extends GroundTransport implements Serializable {
     private Trailer trailer;
     private String trailerConnection;
 

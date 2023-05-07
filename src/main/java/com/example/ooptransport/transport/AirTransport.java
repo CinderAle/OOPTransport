@@ -1,5 +1,7 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.*;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 

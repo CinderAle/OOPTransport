@@ -1,9 +1,4 @@
-package com.example.ooptransport;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+package com.example.ooptransport.customcontrols;
 
 public class NumberField  extends LimitedField {
     @Override

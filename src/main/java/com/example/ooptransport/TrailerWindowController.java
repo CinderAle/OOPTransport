@@ -1,5 +1,6 @@
 package com.example.ooptransport;
 
+import com.example.ooptransport.transport.Trailer;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

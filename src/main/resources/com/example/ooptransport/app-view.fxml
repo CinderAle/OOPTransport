@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import com.example.ooptransport.LimitedField?>
-<?import com.example.ooptransport.NumberField?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="back" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooptransport.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="back" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooptransport.Controller">
    <children>
       <Pane fx:id="dataFieldsPane" layoutX="501.0" layoutY="51.0" prefHeight="533.0" prefWidth="485.0">
          <children>
             <Pane fx:id="basicDataFieldsPane" layoutX="-5.0" prefHeight="216.0" prefWidth="496.0" visible="false">
                <children>
-                  <LimitedField fx:id="brandTextBox" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="212.0" promptText="Brand" maxLength="24"/>
-                  <LimitedField fx:id="modelTextField" layoutX="258.0" layoutY="14.0" prefHeight="25.0" prefWidth="212.0" promptText="Model" maxLength="24"/>
-                  <LimitedField fx:id="colorTextField" layoutX="14.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Color" maxLength="24"/>
-                  <LimitedField fx:id="interiorTextField" layoutX="258.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Interior" maxLength="24"/>
-                  <NumberField fx:id="seatsTextField" layoutX="257.0" layoutY="102.0" prefHeight="25.0" prefWidth="95.0" promptText="Seats" maxLength="3"/>
-                  <NumberField fx:id="yearTextField" layoutX="364.0" layoutY="102.0" prefHeight="25.0" prefWidth="107.0" promptText="Year" maxLength="4"/>
-                  <NumberField fx:id="massTextField" layoutX="258.0" layoutY="149.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass, kg" maxLength="5"/>
-                  <NumberField fx:id="mileageTextField" layoutX="364.0" layoutY="149.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage, km" maxLength="7"/>
+                  <TextField fx:id="brandTextBox" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="212.0" promptText="Brand" />
+                  <TextField fx:id="modelTextField" layoutX="258.0" layoutY="14.0" prefHeight="25.0" prefWidth="212.0" promptText="Model" />
+                  <TextField fx:id="colorTextField" layoutX="14.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Color" />
+                  <TextField fx:id="interiorTextField" layoutX="258.0" layoutY="56.0" prefHeight="25.0" prefWidth="212.0" promptText="Interior" />
+                  <TextField fx:id="seatsTextField" layoutX="257.0" layoutY="102.0" prefHeight="25.0" prefWidth="95.0" promptText="Seats" />
+                  <TextField fx:id="yearTextField" layoutX="364.0" layoutY="102.0" prefHeight="25.0" prefWidth="107.0" promptText="Year" />
+                  <TextField fx:id="massTextField" layoutX="258.0" layoutY="149.0" prefHeight="25.0" prefWidth="95.0" promptText="Mass" />
+                  <TextField fx:id="mileageTextField" layoutX="364.0" layoutY="149.0" prefHeight="25.0" prefWidth="107.0" promptText="Mileage" />
                   <ComboBox fx:id="vehicleTypeComboBox" layoutX="258.0" layoutY="184.0" prefHeight="25.0" prefWidth="212.0" />
                   <TextArea fx:id="specificationsTextArea" layoutX="14.0" layoutY="100.0" prefHeight="110.0" prefWidth="212.0" promptText="Specifications" />
                   <Label layoutX="14.0" layoutY="-5.0" text="Brand" />
@@ -28,15 +27,15 @@
                   <Label layoutX="257.0" layoutY="40.0" text="Interior" />
                   <Label layoutX="257.0" layoutY="84.0" text="Seats" />
                   <Label layoutX="364.0" layoutY="84.0" text="Year" />
-                  <Label layoutX="257.0" layoutY="131.0" text="Mass, kg" />
-                  <Label layoutX="364.0" layoutY="131.0" text="Mileage, km" />
+                  <Label layoutX="257.0" layoutY="131.0" text="Mass" />
+                  <Label layoutX="364.0" layoutY="131.0" text="Mileage" />
                </children>
             </Pane>
             <Pane fx:id="airTransportPane" layoutY="208.0" prefHeight="155.0" prefWidth="485.0" visible="false">
                <children>
                   <ComboBox fx:id="airTransportTypeComboBox" layoutX="251.0" layoutY="134.0" prefHeight="25.0" prefWidth="212.0" />
-                  <NumberField fx:id="airMaxHeightTextField" layoutX="246.0" layoutY="27.0" prefHeight="25.0" prefWidth="95.0" promptText="Max height, km" maxLength="4"/>
-                  <NumberField fx:id="airMaxDistanceTextField" layoutX="357.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" promptText="Max distance, km" maxLength="5"/>
+                  <TextField fx:id="airMaxHeightTextField" layoutX="246.0" layoutY="27.0" prefHeight="25.0" prefWidth="95.0" promptText="Max height" />
+                  <TextField fx:id="airMaxDistanceTextField" layoutX="357.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" promptText="Max distance" />
                   <Button fx:id="airAddEngineButton" layoutX="253.0" layoutY="78.0" mnemonicParsing="false" onMouseClicked="#showEngineWindow" text="Add engine " />
                   <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="27.0" prefHeight="132.0" prefWidth="212.0">
                     <content>
@@ -48,29 +47,29 @@
                     </content>
                   </ScrollPane>
                   <Label layoutX="14.0" layoutY="6.0" text="Engines" />
-                  <Label layoutX="246.0" layoutY="6.0" text="Max height, km" />
-                  <Label layoutX="357.0" layoutY="6.0" text="Max distance, km" />
+                  <Label layoutX="246.0" layoutY="6.0" text="Max height" />
+                  <Label layoutX="357.0" layoutY="6.0" text="Max distance" />
                </children>
             </Pane>
             <Pane fx:id="seaTransportPane" layoutY="220.0" prefHeight="114.0" prefWidth="485.0" visible="false">
                <children>
-                  <NumberField fx:id="seaVolumeDisplacementTextField" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Volume displacement, mL" maxLength="6"/>
-                  <NumberField fx:id="seaNormalDisplacementTextField" layoutX="259.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Normal displacement, m" maxLength="3"/>
+                  <TextField fx:id="seaVolumeDisplacementTextField" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Volume displacement" />
+                  <TextField fx:id="seaNormalDisplacementTextField" layoutX="259.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Normal displacement" />
                   <Button fx:id="seaEditEngineButton" layoutX="14.0" layoutY="63.0" mnemonicParsing="false" onMouseClicked="#showEngineWindow" text="Edit engine information" />
-                  <Label layoutX="14.0" layoutY="1.0" text="Volume displacement, mL" />
-                  <Label layoutX="259.0" layoutY="1.0" text="Normal displacement, m" />
+                  <Label layoutX="14.0" layoutY="1.0" text="Volume displacement" />
+                  <Label layoutX="259.0" layoutY="1.0" text="Normal displacement" />
                </children>
             </Pane>
             <Pane fx:id="groundTransportPane" layoutY="220.0" prefHeight="155.0" prefWidth="485.0" visible="false">
                <children>
-                  <NumberField fx:id="groundWheelsTextField" layoutX="14.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="Wheels" maxLength="2"/>
-                  <LimitedField fx:id="groundHighwayTextField" layoutX="96.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="L/100km" maxLength="5"/>
-                  <LimitedField fx:id="groundCityTextField" layoutX="181.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="L/100km" maxLength="5"/>
-                  <NumberField fx:id="groundGearsTextField" layoutX="262.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="Gears" maxLength="2"/>
+                  <TextField fx:id="groundWheelsTextField" layoutX="14.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="Wheels" />
+                  <TextField fx:id="groundHighwayTextField" layoutX="96.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="Highway" />
+                  <TextField fx:id="groundCityTextField" layoutX="181.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="City" />
+                  <TextField fx:id="groundGearsTextField" layoutX="262.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" promptText="Gears" />
                   <ComboBox fx:id="groundWheelDriveComboBox" layoutX="334.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" />
                   <ComboBox fx:id="groundGearboxComboBox" layoutX="411.0" layoutY="21.0" prefHeight="25.0" prefWidth="60.0" />
-                  <LimitedField fx:id="groundGearboxManTextField" layoutX="14.0" layoutY="72.0" promptText="Gearbox manufacturer" maxLength="24"/>
-                  <LimitedField fx:id="groundSoundTextField" layoutX="181.0" layoutY="72.0" promptText="Sound system" maxLength="24"/>
+                  <TextField fx:id="groundGearboxManTextField" layoutX="14.0" layoutY="72.0" promptText="Gearbox manufacturer" />
+                  <TextField fx:id="groundSoundTextField" layoutX="181.0" layoutY="72.0" promptText="Sound system" />
                   <CheckBox fx:id="groundLeftSidedCheckbox" layoutX="334.0" layoutY="76.0" mnemonicParsing="false" text="Left sided" />
                   <ComboBox fx:id="groundTypeComboBox" layoutX="13.0" layoutY="107.0" prefWidth="150.0" />
                   <Button fx:id="groundEditEngineButton" layoutX="181.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#showEngineWindow" prefHeight="25.0" prefWidth="149.0" text="Edit engine information" />
@@ -86,16 +85,16 @@
             </Pane>
             <Pane fx:id="airplanePane" layoutY="370.0" prefHeight="54.0" prefWidth="485.0" visible="false">
                <children>
-                  <LimitedField fx:id="airplaneClassTextField" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Class" maxLength="24"/>
-                  <NumberField fx:id="airplaneLandingsTextField" layoutX="259.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Landings" maxLength="6"/>
+                  <TextField fx:id="airplaneClassTextField" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Class" />
+                  <TextField fx:id="airplaneLandingsTextField" layoutX="259.0" layoutY="22.0" prefHeight="25.0" prefWidth="212.0" promptText="Landings" />
                   <Label layoutX="14.0" layoutY="6.0" text="Class" />
                   <Label layoutX="259.0" layoutY="6.0" text="Landings" />
                </children>
             </Pane>
             <Pane fx:id="helicopterPane" layoutY="370.0" prefHeight="54.0" prefWidth="485.0" visible="false">
                <children>
-                  <NumberField fx:id="helicopterBladesTextField" layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Blades" maxLength="2"/>
-                  <LimitedField fx:id="helicopterRotorsTypeTextField" layoutX="259.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Rotors type" maxLength="24"/>
+                  <TextField fx:id="helicopterBladesTextField" layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Blades" />
+                  <TextField fx:id="helicopterRotorsTypeTextField" layoutX="259.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Rotors type" />
                   <Label layoutX="14.0" layoutY="12.0" text="Blades" />
                   <Label layoutX="259.0" layoutY="12.0" text="Rotors type" />
                </children>
@@ -103,20 +102,20 @@
             <Pane fx:id="passengerCarPane" layoutY="360.0" prefHeight="132.0" prefWidth="485.0" visible="false">
                <children>
                   <ComboBox fx:id="passengerBodyTypeComboBox" layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" />
-                  <LimitedField fx:id="passengerAssemblyTextField" layoutX="259.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" promptText="Assembly" maxLength="24"/>
-                  <LimitedField fx:id="passengerEquipmentTextField" layoutX="14.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Equipment" maxLength="24"/>
-                  <NumberField fx:id="passengerRimsRadiusTextField" layoutX="259.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Rims radius" maxLength="2"/>
+                  <TextField fx:id="passengerAssemblyTextField" layoutX="259.0" layoutY="25.0" prefHeight="25.0" prefWidth="212.0" promptText="Assembly" />
+                  <TextField fx:id="passengerEquipmentTextField" layoutX="14.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Equipment" />
+                  <TextField fx:id="passengerRimsRadiusTextField" layoutX="259.0" layoutY="71.0" prefHeight="25.0" prefWidth="212.0" promptText="Rims radius" />
                   <Button fx:id="passengerTrailerButton" layoutX="14.0" layoutY="106.0" mnemonicParsing="false" onMouseClicked="#showTrailerWindow" text="Trailer" />
                   <Label layoutX="14.0" layoutY="6.0" text="Body type" />
                   <Label layoutX="259.0" layoutY="6.0" text="Assembly" />
                   <Label layoutX="14.0" layoutY="53.0" text="Equipment" />
-                  <Label layoutX="259.0" layoutY="53.0" text="Rims radius, '" />
+                  <Label layoutX="259.0" layoutY="53.0" text="Rims radius" />
                </children>
             </Pane>
             <Pane fx:id="truckPane" layoutY="360.0" prefHeight="54.0" prefWidth="485.0" visible="false">
                <children>
                   <Button fx:id="truckTrailerButton" layoutX="14.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#showTrailerWindow" prefHeight="25.0" prefWidth="212.0" text="Trailer" />
-                  <LimitedField fx:id="truckConnectionTextField" layoutX="259.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Trailer connection" maxLength="24"/>
+                  <TextField fx:id="truckConnectionTextField" layoutX="259.0" layoutY="27.0" prefHeight="25.0" prefWidth="212.0" promptText="Trailer connection" />
                   <Label layoutX="259.0" layoutY="6.0" text="Trailer connection" />
                </children>
             </Pane>
@@ -132,5 +131,16 @@
          </children>
       </Pane>
       <Button fx:id="addVehicleButton" layoutX="865.0" layoutY="26.0" mnemonicParsing="false" onMouseClicked="#addVehicle" prefHeight="25.0" prefWidth="107.0" text="Add a vehicle" />
+      <MenuBar layoutY="-1.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#saveListToTheFile" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveListToAFile" text="Save as" />
+              <MenuItem mnemonicParsing="false" onAction="#getListFromFile" text="Open" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
-</Pane>
+</AnchorPane>

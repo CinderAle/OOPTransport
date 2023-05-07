@@ -1,24 +1,27 @@
 package com.example.ooptransport;
 
-import javafx.beans.Observable;
+import com.example.ooptransport.serializer.BinarySerializer;
+import com.example.ooptransport.serializer.Serializer;
+import com.example.ooptransport.serializer.TextSerializer;
+import com.example.ooptransport.serializer.JSONSerialize;
+import com.example.ooptransport.transport.*;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -76,9 +79,11 @@ public class Controller {
     public Trailer objectTrailer;
     public Accordion enginesAccordion;
     public Accordion objectsAccordion;
-    boolean isChanging = false;
 
+    boolean isChanging = false;
     ArrayList<Transport> allTransport = null;
+    HashMap<String, Serializer> serializers = new HashMap<>();
+    File lastOpenedFile = null;
 
     public void clearAllFields(){
         brandTextBox.setText("");
@@ -117,6 +122,17 @@ public class Controller {
         truckConnectionTextField.setText("");
     }
 
+    void initSerializers(){
+        if(serializers.size() == 0) {
+            TextSerializer text = new TextSerializer();
+            BinarySerializer binary = new BinarySerializer();
+            JSONSerialize json = new JSONSerialize();
+            serializers.put(text.getExtension(), text);
+            serializers.put(binary.getExtension(), binary);
+            serializers.put(json.getExtension(), json);
+        }
+    }
+
     public void hideSecondLevelPanes() {
         this.objectEngines = null;
         this.objectTrailer = null;
@@ -150,11 +166,15 @@ public class Controller {
         });
     }
 
-    public void alertNotSetValues(){
+    public void alertMessage(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Not enough data");
-        alert.setContentText("Not all of the fields were set or were set wrongly!");
+        alert.setTitle(title);
+        alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    public void alertNotSetValues(){
+        alertMessage("Not enough data", "Not all of the fields were set or were set wrongly!");
     }
 
     private TransportFactory checkSetTypesCombo(){
@@ -297,5 +317,59 @@ public class Controller {
         stage.setScene(scene);
         stage.showAndWait();
         this.objectTrailer = controller.trailer;
+    }
+
+    String getFileExtension(String path){
+        int extensionStart = path.lastIndexOf('.');
+        if(extensionStart > 0)
+            return path.substring(extensionStart);
+        else
+            return "";
+    }
+
+    void addExtensionsToFileChooser(FileChooser chooser) {
+        for(Serializer serializer: serializers.values()) {
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName(), serializer.getExtension()));
+        }
+    }
+
+    void saveList(File outputFile){
+        if(outputFile != null) {
+            String extension = '*' + getFileExtension(outputFile.getPath());
+            if(extension.length() > 0)
+                serializers.get(extension).serialize(allTransport, outputFile.getPath());
+        }
+    }
+
+    public void saveListToTheFile(ActionEvent actionEvent) {
+        initSerializers();
+        if(lastOpenedFile != null)
+            saveList(lastOpenedFile);
+        else
+            saveListToAFile(actionEvent);
+    }
+
+    public void saveListToAFile(ActionEvent actionEvent) {
+        initSerializers();
+        FileChooser chooser = new FileChooser();
+        addExtensionsToFileChooser(chooser);
+        File outputFile = chooser.showSaveDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
+        saveList(outputFile);
+    }
+
+    public void getListFromFile(ActionEvent actionEvent) {
+        initSerializers();
+        FileChooser chooser = new FileChooser();
+        addExtensionsToFileChooser(chooser);
+        File inputFile = chooser.showOpenDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
+        if(inputFile != null) {
+            String extension = '*' + getFileExtension(inputFile.getPath());
+            if(extension.length() > 0) {
+                allTransport = serializers.get(extension).deserialize(inputFile.getPath());
+                lastOpenedFile = inputFile;
+                for(Transport t : allTransport)
+                    this.objectsAccordion.getPanes().add(t.getTitledPane(this));
+            }
+        }
     }
 }

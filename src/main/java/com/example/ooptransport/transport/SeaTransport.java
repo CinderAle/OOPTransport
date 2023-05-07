@@ -1,9 +1,14 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.Transport;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class SeaTransport extends Transport {
+import java.io.Serializable;
+
+public class SeaTransport extends Transport implements Serializable {
     protected int volumeDisplacement, normalDisplacement;
     protected Engine engine;
 

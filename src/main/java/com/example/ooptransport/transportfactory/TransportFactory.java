@@ -1,4 +1,6 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transportfactory;
+
+import com.example.ooptransport.Transport;
 
 public class TransportFactory {
     private Transport transportType;

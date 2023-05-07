@@ -7,10 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import java.io.Serializable;
 
-import java.io.IOException;
-
-public class Transport {
+public class Transport implements Serializable {
     protected String brand, model, color, interior, specifications;
     protected int seats, manufactureYear, mileage, mass;
 

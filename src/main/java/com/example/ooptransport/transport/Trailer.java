@@ -1,9 +1,14 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.TrailerWindowController;
+import com.example.ooptransport.Transport;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class Trailer extends Transport {
+import java.io.Serializable;
+
+public class Trailer extends Transport implements Serializable {
     private String trailerType;
     private int height, width;
 
@@ -28,8 +33,7 @@ public class Trailer extends Transport {
     }
 
     public AnchorPane initAnchor(){
-        Transport transport = this;
-        AnchorPane anchor = transport.initAnchor();
+        AnchorPane anchor = super.initAnchor();
         Label type = addLabelWithPos("Connection type: " + this.trailerType);
         Label width =addLabelWithPos("Width: " + this.width);
         Label height = addLabelWithPos("Height: " + this.height);

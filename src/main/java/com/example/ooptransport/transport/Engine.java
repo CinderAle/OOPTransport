@@ -1,14 +1,17 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.EngineWindowController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 
-public class Engine {
+public class Engine implements Serializable {
     private int cylinders, horsepower, torque;
     private double volume;
     private String manufacturer;

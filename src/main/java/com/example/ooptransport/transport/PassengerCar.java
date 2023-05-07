@@ -1,9 +1,13 @@
-package com.example.ooptransport;
+package com.example.ooptransport.transport;
 
+import com.example.ooptransport.Controller;
+import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class PassengerCar extends GroundTransport {
+import java.io.Serializable;
+
+public class PassengerCar extends GroundTransport implements Serializable {
     public enum bodyTypes {Sedan, Coupe, Touring, Hatchback, Crossover, SUV};
     private final bodyTypes bodyType;
     private final String assembly;
