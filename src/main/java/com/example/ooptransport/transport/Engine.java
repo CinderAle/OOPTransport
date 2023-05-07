@@ -24,6 +24,14 @@ public class Engine implements Serializable {
         this.manufacturer = manufacturer;
     }
 
+    public Engine() {
+        this.cylinders = 0;
+        this.horsepower = 0;
+        this.torque = 0;
+        this.volume = 0;
+        this.manufacturer = "";
+    }
+
     public static boolean checkForEmpty(TextField tf) {
         return tf.getText().length() > 0;
     }
@@ -38,11 +46,11 @@ public class Engine implements Serializable {
         return label;
     }
 
-    public void setLabelsYStart(int start){
+    public void initLabelsYStart(int start){
         this.labelsYStart = start;
     }
 
-    public int getLabelsYStart(){
+    public int fetchLabelsYStart(){
         return this.labelsYStart;
     }
 
@@ -59,7 +67,7 @@ public class Engine implements Serializable {
         return anchor;
     }
 
-    public void setFields(EngineWindowController controller){
+    public void completeFields(EngineWindowController controller){
         controller.cylindersTextField.setText(Integer.toString(this.cylinders));
         controller.horsepowerTextField.setText(Integer.toString(this.horsepower));
         controller.torqueTextField.setText(Integer.toString(this.torque));
@@ -73,7 +81,7 @@ public class Engine implements Serializable {
         return titled;
     }
 
-    public static Engine getFilled(EngineWindowController controller){
+    public static Engine fetchFilled(EngineWindowController controller){
         Engine engine = new Engine(Integer.parseInt(controller.cylindersTextField.getText()),
                                     Integer.parseInt(controller.horsepowerTextField.getText()),
                                     Integer.parseInt(controller.torqueTextField.getText()),
@@ -164,13 +172,5 @@ public class Engine implements Serializable {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
-    }
-
-    public int getLabelsDistance() {
-        return labelsDistance;
-    }
-
-    public void setLabelsDistance(int labelsDistance) {
-        this.labelsDistance = labelsDistance;
     }
 }

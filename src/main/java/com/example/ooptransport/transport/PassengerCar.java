@@ -50,7 +50,7 @@ public class PassengerCar extends GroundTransport implements Serializable {
         Label rims = addLabelWithPos("Rims radius: " + this.rimsRadius);
         anchor.getChildren().addAll(body, assembly, equipment, rims, addLabelWithPos("Trailer:"));
         if(this.trailer != null)
-            this.trailer.setLabelsYStart(labelsYStart);
+            this.trailer.initLabelsYStart(labelsYStart);
         anchor.getChildren().add(this.trailer != null ? this.trailer.initAnchor() : addLabelWithPos("None"));
         return anchor;
     }

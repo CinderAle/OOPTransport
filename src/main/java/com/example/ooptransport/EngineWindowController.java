@@ -29,7 +29,7 @@ public class EngineWindowController {
     public void addEngine(ActionEvent actionEvent) {
         Stage stage = (Stage)this.engineCancelButton.getScene().getWindow();
         if(Engine.checkFields(this)) {
-            engine = Engine.getFilled(this);
+            engine = Engine.fetchFilled(this);
             stage.close();
         }
         else {

@@ -39,9 +39,9 @@ public class SeaTransport extends Transport implements Serializable {
         Label volume = addLabelWithPos("Volume displacement: " + this.volumeDisplacement);
         Label normal = addLabelWithPos("Normal displacement: " + this.normalDisplacement);
         Label engineLabel = addLabelWithPos("Engine:");
-        this.engine.setLabelsYStart(this.labelsYStart);
+        this.engine.initLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(volume, normal, engineLabel, this.engine.initAnchor());
-        setLabelsYStart(this.engine.getLabelsYStart());
+        initLabelsYStart(this.engine.fetchLabelsYStart());
         return anchor;
     }
 

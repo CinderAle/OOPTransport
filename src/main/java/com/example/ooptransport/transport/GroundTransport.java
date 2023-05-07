@@ -73,10 +73,10 @@ public class GroundTransport extends Transport {
         Label soundSystem = addLabelWithPos("Sound system: " + this.soundSystem);
         Label leftSided = addLabelWithPos("Left sided: " + (this.leftSided ? "yes" : "no"));
         Label engineLabel = addLabelWithPos("Engine:");
-        this.engine.setLabelsYStart(this.labelsYStart);
+        this.engine.initLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(wheels, highway, city, gears, wheelDrive, gearboxType, gearManufacturer, soundSystem, leftSided, engineLabel);
         anchor.getChildren().add(this.engine.initAnchor());
-        setLabelsYStart(this.engine.getLabelsYStart());
+        initLabelsYStart(this.engine.fetchLabelsYStart());
         return anchor;
     }
 

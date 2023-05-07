@@ -38,9 +38,9 @@ public class AirTransport extends Transport {
         Label maxDistance = addLabelWithPos("Maximum distance: " + this.maxDistance);
         anchor.getChildren().addAll(maxHeight, maxDistance, addLabelWithPos("Engines: "));
         for(Engine engine: this.engines) {
-            engine.setLabelsYStart(labelsYStart);
+            engine.initLabelsYStart(labelsYStart);
             anchor.getChildren().add(engine.initAnchor());
-            setLabelsYStart(engine.getLabelsYStart());
+            initLabelsYStart(engine.fetchLabelsYStart());
         }
         return anchor;
     }

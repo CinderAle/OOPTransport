@@ -51,7 +51,7 @@ public class Transport implements Serializable {
         return label;
     }
 
-    public void setLabelsYStart(int labelsYStart) {
+    public void initLabelsYStart(int labelsYStart) {
         this.labelsYStart = labelsYStart;
     }
 
@@ -82,7 +82,7 @@ public class Transport implements Serializable {
         controller.specificationsTextArea.setText(this.specifications);
     }
 
-    public TitledPane getTitledPane(Controller controller) {
+    public TitledPane formTitledPane(Controller controller) {
         TitledPane titledPane = new TitledPane(this.brand + " " + this.model, this.initAnchor());
         titledPane.setContextMenu(new TitledContextMenu(titledPane, controller));
         return titledPane;

@@ -210,7 +210,7 @@ public class Controller {
                     allTransport.add(transport);
                     this.objectsAccordion.getPanes().clear();
                     for(Transport t : allTransport)
-                        this.objectsAccordion.getPanes().add(t.getTitledPane(this));
+                        this.objectsAccordion.getPanes().add(t.formTitledPane(this));
                     clearAllFields();
                     hideThirdLevelPanes();
                     hideSecondLevelPanes();
@@ -239,7 +239,7 @@ public class Controller {
         Scene scene = new Scene(fxmlLoader.load(), 500, 300);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         EngineWindowController controller = fxmlLoader.getController();
-        objectEngines[id].setFields(controller);
+        objectEngines[id].completeFields(controller);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Engine editor");
         stage.setScene(scene);
@@ -289,7 +289,7 @@ public class Controller {
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         EngineWindowController controller = fxmlLoader.getController();
         if(this.objectEngines != null && this.objectEngines.length == 1)
-            this.objectEngines[0].setFields(controller);
+            this.objectEngines[0].completeFields(controller);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Engine editor");
         stage.setScene(scene);
@@ -368,7 +368,7 @@ public class Controller {
                 allTransport = serializers.get(extension).deserialize(inputFile.getPath());
                 lastOpenedFile = inputFile;
                 for(Transport t : allTransport)
-                    this.objectsAccordion.getPanes().add(t.getTitledPane(this));
+                    this.objectsAccordion.getPanes().add(t.formTitledPane(this));
             }
         }
     }

@@ -43,7 +43,7 @@ public class Truck extends GroundTransport implements Serializable {
     public AnchorPane initAnchor(){
         AnchorPane anchor = super.initAnchor();
         Label connection = addLabelWithPos("Connection type: " + this.trailerConnection);
-        this.trailer.setLabelsYStart(this.labelsYStart);
+        this.trailer.initLabelsYStart(this.labelsYStart);
         anchor.getChildren().addAll(connection, new Label("Trailer: "), this.trailer.initAnchor());
         return anchor;
     }
