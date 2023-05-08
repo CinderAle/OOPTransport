@@ -1,6 +1,7 @@
 package com.example.ooptransport.serializer;
 
 import com.example.ooptransport.Transport;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class BinarySerializer implements Serializer {
 
     @Override
     public String getName() {
-        return "Binary";
+        return "Binary (*.bin)";
     }
 
     @Override
@@ -23,7 +24,7 @@ public class BinarySerializer implements Serializer {
             outputStream.writeObject(transport);
         }
         catch(IOException e) {
-            System.err.println("An error occurred while saving the list to the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while saving the list to the file!").showAndWait();
         }
     }
 
@@ -34,7 +35,7 @@ public class BinarySerializer implements Serializer {
             transport = (ArrayList<Transport>) inputStream.readObject();
         }
         catch(IOException | ClassNotFoundException e){
-            System.err.println("An error occurred while reading the list from the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while reading the list from the file!").showAndWait();
         }
         return transport;
     }

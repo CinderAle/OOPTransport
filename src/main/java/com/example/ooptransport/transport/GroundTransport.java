@@ -220,7 +220,7 @@ public class GroundTransport extends Transport {
         this.engine = engine;
     }
 
-    public boolean isLeftSided() {
+    public boolean getLeftSided() {
         return leftSided;
     }
 

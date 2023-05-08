@@ -5,6 +5,8 @@ import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.ArrayList;
+
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class AirTransport extends Transport {
@@ -54,8 +56,11 @@ public class AirTransport extends Transport {
         controller.vehicleTypeComboBox.getSelectionModel().select(new TransportFactory("Air transport", new AirTransport()));
         controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
         controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
-        controller.objectEngines = this.engines.clone();
-        controller.addEngineAccord();
+        if(this.engines != null) {
+            System.out.println(this.engines.length);
+            controller.objectEngines = this.engines;
+            controller.addEngineAccord();
+        }
     }
 
     public boolean checkFields(Controller controller){
@@ -111,7 +116,9 @@ public class AirTransport extends Transport {
         return engines;
     }
 
-    public void setEngines(Engine[] engines) {
-        this.engines = engines;
+    public void setEngines(ArrayList<Engine> engines) {
+        this.engines = new Engine[engines.size()];
+        for(int i = 0;i < engines.size();i++)
+            this.engines[i] = engines.get(i);
     }
 }

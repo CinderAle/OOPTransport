@@ -1,14 +1,14 @@
 package com.example.ooptransport.serializer;
 
 import com.example.ooptransport.Transport;
+import com.example.ooptransport.transport.GroundTransport;
+import com.example.ooptransport.transport.PassengerCar;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TextSerializer implements Serializer {
     private final String transportPackage = "com.example.ooptransport.transport.";
@@ -19,7 +19,7 @@ public class TextSerializer implements Serializer {
 
     @Override
     public String getName() {
-        return "Text";
+        return "Text (*.txt)";
     }
 
     @Override
@@ -75,21 +75,30 @@ public class TextSerializer implements Serializer {
             System.out.println(method + " - " + methods.get(method));
     }
 
+    private boolean checkType(String type) {
+        String[] usedTypes = {"int", "double", "boolean", "String", "wheelDriveTypes", "gearboxTypes", "bodyTypes"};
+        return Arrays.asList(usedTypes).contains(type);
+    }
+
     private void writeObjectToBufferedWriter(Object object, BufferedWriter writer) throws IOException, IllegalAccessException, InvocationTargetException {
         writer.write(classNameDivider + object.getClass().getSimpleName() + classNameDivider + "\r\n");
         HashMap<String, Method> getters = retrieveObjectGetters(object);
         for(String getterName : getters.keySet()) {
             String type = getters.get(getterName).getReturnType().getSimpleName();
-            if(type.equals("int") || type.equals("double") || type.equals("boolean") || type.equals("String")) {
-                writer.write(getterName + valueDivider + " " + getters.get(getterName).invoke(object) + fieldDivider + "\r\n");
+            System.out.println(type);
+            if(checkType(type)) {
+                writer.write(getterName + valueDivider + " " + getters.get(getterName).invoke(object).toString() + fieldDivider + "\r\n");
             }
             else if(!type.contains("[]")) {
-                writeObjectToBufferedWriter(getters.get(getterName).invoke(object), writer);
+                Object reflected = getters.get(getterName).invoke(object);
+                if(reflected != null)
+                    writeObjectToBufferedWriter(reflected, writer);
             }
             else {
                 Object engines = getters.get(getterName).invoke(object);
-                for(Object engine: (Object[])engines)
+                for(Object engine: (Object[])engines) {
                     writeObjectToBufferedWriter(engine, writer);
+                }
             }
         }
         if(!object.getClass().getSimpleName().equals("Engine") && !object.getClass().getSimpleName().equals("Trailer"))
@@ -107,16 +116,18 @@ public class TextSerializer implements Serializer {
             writer.close();
         }
         catch(Exception e){
-            System.err.println("An error occurred while saving the list to the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while saving the list to the file!").showAndWait();
         }
     }
 
     private Transport setReflectionObjects(Object vehicle, ArrayList<Object> reflected, HashMap<String, Method> setters) throws IllegalAccessException, InvocationTargetException {
-        if(vehicle.getClass().getSimpleName().equals("Airplane") || vehicle.getClass().getSimpleName().equals("Helicopter"))
-            setters.get("Engines").invoke(vehicle, reflected.toArray());
-        else
-            for(Object object : reflected)
+        if(vehicle.getClass().getSimpleName().equals("Airplane") || vehicle.getClass().getSimpleName().equals("Helicopter")) {
+            setters.get("Engines").invoke(vehicle, reflected);
+        }
+        else {
+            for (Object object : reflected)
                 setters.get(object.getClass().getSimpleName()).invoke(vehicle, object);
+        }
         return (Transport) vehicle;
     }
 
@@ -133,6 +144,7 @@ public class TextSerializer implements Serializer {
             if(j < instanceFields.size() && i < allFields.size() && instanceFields.get(j).contains(valueDivider)) {
                 String value = splitString(instanceFields.get(j), valueDivider).get(1).trim();
                 String type = getters.get(setterName).getReturnType().getSimpleName();
+                System.out.println(type);
                 switch (type) {
                     case "int":
                         setters.get(setterName).invoke(instance, Integer.parseInt(value));
@@ -146,11 +158,23 @@ public class TextSerializer implements Serializer {
                     case "String":
                         setters.get(setterName).invoke(instance, value);
                         break;
+                    case "wheelDriveTypes":
+                        setters.get(setterName).invoke(instance, GroundTransport.wheelDriveTypes.valueOf(value));
+                        break;
+                    case "gearboxTypes":
+                        setters.get(setterName).invoke(instance, GroundTransport.gearboxTypes.valueOf(value));
+                        break;
+                    case "bodyTypes":
+                        setters.get(setterName).invoke(instance, PassengerCar.bodyTypes.valueOf(value));
+                        break;
+                    default:
+                        j--;
                 }
                 j++;
             }
             else if (i < allFields.size()) {
-                i++;
+                if(allFields.get(i).contains(valueDivider))
+                    i++;
                 if(i < allFields.size() && !allFields.contains(fieldDivider)) {
                     Object reflectionInstance = Class.forName(transportPackage + allFields.get(i++)).getConstructor().newInstance();
                     HashMap<String, Method> subSetters = retrieveObjectSetters(reflectionInstance);
@@ -161,7 +185,7 @@ public class TextSerializer implements Serializer {
                         if(k < reflectedFields.size()) {
                             String value = splitString(reflectedFields.get(k), valueDivider).get(1).trim();
                             String type = subGetters.get(subSetName).getReturnType().getSimpleName();
-                            switch (type){
+                            switch (type) {
                                 case "int":
                                     subSetters.get(subSetName).invoke(reflectionInstance, Integer.parseInt(value));
                                     break;
@@ -184,8 +208,6 @@ public class TextSerializer implements Serializer {
                     reflected.add(reflectionInstance);
                 }
             }
-            else
-                break;
         }
         return setReflectionObjects(instance, reflected, setters);
     }
@@ -203,7 +225,7 @@ public class TextSerializer implements Serializer {
                 transport.add(objectLineToTransport(vehicle));
         }
         catch(Exception e){
-            System.err.println("An error occurred while reading the list from the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while reading the list from the file!").showAndWait();
         }
         return transport;
     }

@@ -134,8 +134,6 @@ public class Controller {
     }
 
     public void hideSecondLevelPanes() {
-        this.objectEngines = null;
-        this.objectTrailer = null;
         airTransportPane.setVisible(false);
         groundTransportPane.setVisible(false);
         seaTransportPane.setVisible(false);
@@ -166,6 +164,22 @@ public class Controller {
         });
     }
 
+    public void setTransportTypesCombo(){
+        if(this.vehicleTypeComboBox.getValue() == null) {
+            setTransportComboBoxItems(this.vehicleTypeComboBox, observableArrayList(
+                    new TransportFactory("Air transport", new AirTransport()),
+                    new TransportFactory("Ground transport", new GroundTransport()),
+                    new TransportFactory("Sea transport", new SeaTransport())
+            ));
+        }
+    }
+
+    public void setTransportAccordion() {
+        this.objectsAccordion.getPanes().clear();
+        for(Transport t : allTransport)
+            this.objectsAccordion.getPanes().add(t.formTitledPane(this));
+    }
+
     public void alertMessage(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -192,11 +206,7 @@ public class Controller {
     public void addVehicle(MouseEvent mouseEvent) {
         if(!isChanging) {
             this.basicDataFieldsPane.setVisible(true);
-            setTransportComboBoxItems(this.vehicleTypeComboBox, observableArrayList(
-                    new TransportFactory("Air transport", new AirTransport()),
-                    new TransportFactory("Ground transport", new GroundTransport()),
-                    new TransportFactory("Sea transport", new SeaTransport())
-            ));
+            setTransportTypesCombo();
             isChanging = true;
         }
         else {
@@ -208,9 +218,7 @@ public class Controller {
                     if(allTransport == null)
                         allTransport = new ArrayList<Transport>();
                     allTransport.add(transport);
-                    this.objectsAccordion.getPanes().clear();
-                    for(Transport t : allTransport)
-                        this.objectsAccordion.getPanes().add(t.formTitledPane(this));
+                    setTransportAccordion();
                     clearAllFields();
                     hideThirdLevelPanes();
                     hideSecondLevelPanes();
@@ -367,8 +375,7 @@ public class Controller {
             if(extension.length() > 0) {
                 allTransport = serializers.get(extension).deserialize(inputFile.getPath());
                 lastOpenedFile = inputFile;
-                for(Transport t : allTransport)
-                    this.objectsAccordion.getPanes().add(t.formTitledPane(this));
+                setTransportAccordion();
             }
         }
     }

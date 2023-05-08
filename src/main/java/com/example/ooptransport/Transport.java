@@ -57,6 +57,7 @@ public class Transport implements Serializable {
 
     public AnchorPane initAnchor(){
         AnchorPane anchor = new AnchorPane();
+        labelsYStart = 5;
         Label brand = addLabelWithPos("Brand: " + this.brand);
         Label model = addLabelWithPos("Model: " + this.model);
         Label color = addLabelWithPos("Color: " + this.color);
@@ -88,15 +89,24 @@ public class Transport implements Serializable {
         return titledPane;
     }
 
+    private static boolean checkSpecialSymbols(String line) {
+        boolean hasSpecial = false;
+        String[] specialDividers = {"" + (char)1, "" + (char)2, "" + (char)3, "" + (char)4};
+        for(int i = 0;i < specialDividers.length && !hasSpecial;i++)
+            hasSpecial = line.contains(specialDividers[i]);
+        return hasSpecial;
+    }
+
     protected static boolean checkForEmpty(String line) {
-        return line.length() > 0;
+        return line.length() > 0 && !checkSpecialSymbols(line);
     }
 
     public boolean checkFields(Controller controller) {
         boolean isCorrect = checkForEmpty(controller.brandTextBox.getText()) &&
                             checkForEmpty(controller.modelTextField.getText()) &&
                             checkForEmpty(controller.colorTextField.getText()) &&
-                            checkForEmpty(controller.interiorTextField.getText());
+                            checkForEmpty(controller.interiorTextField.getText()) &&
+                            !checkSpecialSymbols(controller.specificationsTextArea.getText());
         if(isCorrect){
             try{
                 Integer.parseInt(controller.massTextField.getText());
@@ -127,6 +137,7 @@ public class Transport implements Serializable {
 
     public void generateFields(Controller controller) {
         controller.basicDataFieldsPane.setVisible(true);
+        controller.setTransportTypesCombo();
     }
 
     private class TitledContextMenu extends ContextMenu {
@@ -147,8 +158,8 @@ public class Transport implements Serializable {
                     int id = controller.objectsAccordion.getPanes().indexOf(tp);
                     controller.objectsAccordion.getPanes().remove(id);
                     controller.isChanging = true;
-                    controller.allTransport.get(id).completeFields(controller);
                     controller.allTransport.get(id).generateFields(controller);
+                    controller.allTransport.get(id).completeFields(controller);
                     controller.allTransport.remove(id);
                 }
             });

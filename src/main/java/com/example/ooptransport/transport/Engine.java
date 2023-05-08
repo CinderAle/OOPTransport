@@ -30,13 +30,14 @@ public class Engine implements Serializable {
         this.torque = 0;
         this.volume = 0;
         this.manufacturer = "";
+        this.labelsYStart = 5;
     }
 
     public static boolean checkForEmpty(TextField tf) {
         return tf.getText().length() > 0;
     }
 
-    private int labelsYStart = 5;
+    private int labelsYStart;
     private int labelsDistance = 20;
     protected Label addLabelWithPos(String text){
         Label label = new Label(text);
@@ -54,7 +55,7 @@ public class Engine implements Serializable {
         return this.labelsYStart;
     }
 
-    public AnchorPane initAnchor(){
+    public AnchorPane initAnchor() {
         AnchorPane anchor = new AnchorPane();
         Label dividerStart = addLabelWithPos("------------------------------------------------");
         Label cylinderLabel = addLabelWithPos("Cylinders: " + Integer.toString(this.cylinders));
@@ -76,6 +77,7 @@ public class Engine implements Serializable {
     }
 
     public TitledPane addTile(Controller controller){
+        this.labelsYStart = 5;
         TitledPane titled = new TitledPane(this.manufacturer, initAnchor());
         titled.setContextMenu(new TitledContextMenu(titled, controller));
         return titled;
@@ -125,7 +127,7 @@ public class Engine implements Serializable {
                         controller.changeEngineTitledPane(tp);
                     }
                     catch(IOException e){
-                        System.out.println("Error occured!");
+                        System.out.println("Error occurred!");
                     }
                 }
             });

@@ -92,7 +92,7 @@ public class PassengerCar extends GroundTransport implements Serializable {
     public void generateFields(Controller controller) {
         super.generateFields(controller);
         if(controller.groundTypeComboBox.getValue() == null)
-            controller.groundTypeComboBox.setValue(new TransportFactory("Car", new PassengerCar()));
+            controller.groundTypeComboBox.setValue(new TransportFactory("Passenger car", new PassengerCar()));
         controller.hideThirdLevelPanes();
         controller.passengerCarPane.setVisible(true);
         if(controller.passengerBodyTypeComboBox.getValue() == null)

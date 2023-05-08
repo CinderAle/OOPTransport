@@ -5,6 +5,7 @@ import com.example.ooptransport.transport.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -15,7 +16,7 @@ public class JSONSerialize implements Serializer {
             .registerSubtype(PassengerCar.class, "car").registerSubtype(Truck.class, "truck").registerSubtype(Trailer.class, "trailer");
     @Override
     public String getName() {
-        return "JSON";
+        return "JSON (*.json)";
     }
 
     @Override
@@ -31,7 +32,7 @@ public class JSONSerialize implements Serializer {
             writer.write(gson.toJson(transport, type));
         }
         catch(IOException e){
-            System.err.println("An error occurred while saving the list to the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while saving the list to the file!").showAndWait();
         }
     }
 
@@ -44,7 +45,7 @@ public class JSONSerialize implements Serializer {
             contents = reader.readLine();
         }
         catch(IOException e){
-            System.err.println("An error occurred while reading the list from the file!");
+            new Alert(Alert.AlertType.ERROR, "An error occurred while reading the list from the file!").showAndWait();
         }
         return gson.fromJson(contents, type);
     }

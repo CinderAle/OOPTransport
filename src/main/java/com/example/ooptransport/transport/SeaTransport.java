@@ -51,6 +51,7 @@ public class SeaTransport extends Transport implements Serializable {
 
     public void completeFields(Controller controller){
         super.completeFields(controller);
+        controller.vehicleTypeComboBox.setValue(new TransportFactory("Sea transport", new SeaTransport()));
         controller.seaVolumeDisplacementTextField.setText(Integer.toString(this.volumeDisplacement));
         controller.seaNormalDisplacementTextField.setText(Integer.toString(this.normalDisplacement));
         controller.objectEngines = new Engine[1];
@@ -76,8 +77,6 @@ public class SeaTransport extends Transport implements Serializable {
     @Override
     public void generateFields(Controller controller) {
         super.generateFields(controller);
-        if(controller.vehicleTypeComboBox.getValue() == null)
-            controller.vehicleTypeComboBox.setValue(new TransportFactory("Sea transport", new SeaTransport()));
         controller.hideSecondLevelPanes();
         controller.hideThirdLevelPanes();
         controller.seaTransportPane.setVisible(true);
