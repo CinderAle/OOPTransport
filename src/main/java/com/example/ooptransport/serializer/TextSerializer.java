@@ -6,16 +6,20 @@ import com.example.ooptransport.transport.PassengerCar;
 import javafx.scene.control.Alert;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class TextSerializer implements Serializer {
     private final String transportPackage = "com.example.ooptransport.transport.";
-    private final String classNameDivider = "" + (char)1;
-    private final String objectsDivider = "" + (char)2;
-    private final String valueDivider = "" + (char)3;
-    private final String fieldDivider = "" + (char)4;
+    private final String classNamePreDivider = "@";
+    private final String classNameDivider = classNamePreDivider + '\r';
+    private final String objectsDivider = ",\r";
+    private final String valueDivider = ":";
+    private final String fieldDivider = ";\r";
 
     @Override
     public String getName() {
@@ -41,8 +45,40 @@ public class TextSerializer implements Serializer {
             index = dividerIndex + divider.length();
             dividerIndex = line.indexOf(divider, dividerIndex + 1);
         }
-        if(!line.substring(index).isEmpty())
+        if(!line.substring(index).trim().isEmpty())
             splits.add(line.substring(index));
+        return splits;
+    }
+
+    private ArrayList<String> splitByObjectName(String line) {
+        String temp = "";
+        ArrayList<String> splits = new ArrayList<>();
+        int nameEnd = line.indexOf(classNameDivider);
+        int prevEnd = 0;
+        int prevDivider = 0;
+        int currDivider = line.indexOf(classNamePreDivider);
+        while(nameEnd >= 0) {
+            while(currDivider != nameEnd){
+                prevDivider = currDivider;
+                currDivider = line.indexOf(classNamePreDivider, currDivider + 1);
+            }
+            if(prevEnd > 0 && prevEnd != prevDivider)
+                temp = line.substring(prevEnd + classNameDivider.length(), prevDivider);
+            else if(prevEnd > 0)
+                temp = "";
+            else
+                temp = line.substring(0, prevDivider).trim();
+            if(!temp.isEmpty())
+                splits.add(temp);
+            temp = line.substring(prevDivider + 1, nameEnd);
+            if(!temp.isEmpty())
+                splits.add(temp);
+            prevEnd = nameEnd;
+            nameEnd = line.indexOf(classNameDivider, nameEnd + 1);
+        }
+        temp = line.substring(prevEnd + classNameDivider.length()).trim();
+        if(!temp.isEmpty())
+            splits.add(temp);
         return splits;
     }
 
@@ -75,19 +111,44 @@ public class TextSerializer implements Serializer {
             System.out.println(method + " - " + methods.get(method));
     }
 
+    private String cutSpecialSymbols(String line) {
+        String cutLine = "";
+        for(int i = 0;i < line.length();i++) {
+            if(line.charAt(i) == '\r') {
+                cutLine += '\n';
+                if(i + 1 < line.length() && line.charAt(i + 1) == '\n')
+                    i++;
+            }
+            else
+                cutLine += line.charAt(i);
+        }
+        return cutLine;
+    }
+
+    private String getSecondApperanace(String line, String divider) {
+        ArrayList<String> parts = splitString(line, divider);
+        if(parts.size() > 1){
+            String glue = "";
+            for(int i = 1;i < parts.size();i++)
+                glue = glue.concat(parts.get(i));
+            return glue;
+        }
+        else
+            return null;
+    }
+
     private boolean checkType(String type) {
         String[] usedTypes = {"int", "double", "boolean", "String", "wheelDriveTypes", "gearboxTypes", "bodyTypes"};
         return Arrays.asList(usedTypes).contains(type);
     }
 
     private void writeObjectToBufferedWriter(Object object, BufferedWriter writer) throws IOException, IllegalAccessException, InvocationTargetException {
-        writer.write(classNameDivider + object.getClass().getSimpleName() + classNameDivider + "\r\n");
+        writer.write(classNamePreDivider + object.getClass().getSimpleName() + classNameDivider + "\n");
         HashMap<String, Method> getters = retrieveObjectGetters(object);
         for(String getterName : getters.keySet()) {
             String type = getters.get(getterName).getReturnType().getSimpleName();
-            System.out.println(type);
             if(checkType(type)) {
-                writer.write(getterName + valueDivider + " " + getters.get(getterName).invoke(object).toString() + fieldDivider + "\r\n");
+                writer.write(getterName + valueDivider + " " + cutSpecialSymbols(getters.get(getterName).invoke(object).toString()) + fieldDivider + "\r\n");
             }
             else if(!type.contains("[]")) {
                 Object reflected = getters.get(getterName).invoke(object);
@@ -132,7 +193,7 @@ public class TextSerializer implements Serializer {
     }
 
     private Transport objectLineToTransport(String line) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        ArrayList<String> allFields = splitString(line, classNameDivider);
+        ArrayList<String> allFields = splitByObjectName(line);
         ArrayList<Object> reflected = new ArrayList<>();
         Object instance = Class.forName(transportPackage + allFields.get(0).trim()).getConstructor().newInstance();
         HashMap<String, Method> setters = retrieveObjectSetters(instance);
@@ -142,9 +203,12 @@ public class TextSerializer implements Serializer {
         ArrayList<String> instanceFields = splitString(allFields.get(1), fieldDivider);
         for(String setterName : setters.keySet()) {
             if(j < instanceFields.size() && i < allFields.size() && instanceFields.get(j).contains(valueDivider)) {
-                String value = splitString(instanceFields.get(j), valueDivider).get(1).trim();
+                String value = getSecondApperanace(instanceFields.get(j), valueDivider);
+                if(value != null)
+                    value = value.trim();
+                else
+                    value = "";
                 String type = getters.get(setterName).getReturnType().getSimpleName();
-                System.out.println(type);
                 switch (type) {
                     case "int":
                         setters.get(setterName).invoke(instance, Integer.parseInt(value));
@@ -183,7 +247,7 @@ public class TextSerializer implements Serializer {
                     int k = 0;
                     for(String subSetName : subSetters.keySet()) {
                         if(k < reflectedFields.size()) {
-                            String value = splitString(reflectedFields.get(k), valueDivider).get(1).trim();
+                            String value = getSecondApperanace(reflectedFields.get(k), valueDivider).trim();
                             String type = subGetters.get(subSetName).getReturnType().getSimpleName();
                             switch (type) {
                                 case "int":
@@ -215,12 +279,9 @@ public class TextSerializer implements Serializer {
     @Override
     public ArrayList<Transport> deserialize(String path) {
         ArrayList<Transport> transport = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            StringBuilder file = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null)
-                file.append(line);
-            ArrayList<String> vehicles = splitString(file.toString(), objectsDivider);
+        try {
+            String fileAll = Files.readString(Paths.get(path));
+            ArrayList<String> vehicles = splitString(fileAll, objectsDivider);
             for(String vehicle : vehicles)
                 transport.add(objectLineToTransport(vehicle));
         }

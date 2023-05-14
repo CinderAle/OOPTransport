@@ -68,7 +68,8 @@ public class Helicopter extends AirTransport implements Serializable {
     @Override
     public void generateFields(Controller controller) {
         super.generateFields(controller);
-        controller.objectEngines = this.engines;
+        if(this.engines != null)
+            controller.objectEngines = this.engines;
         if(controller.airTransportTypeComboBox.getValue() == null)
             controller.airTransportTypeComboBox.setValue(new TransportFactory("Helicopter", new Helicopter()));
         controller.hideThirdLevelPanes();

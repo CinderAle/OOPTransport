@@ -55,9 +55,18 @@ public class Transport implements Serializable {
         this.labelsYStart = labelsYStart;
     }
 
+    private int calcSpecificationsNewLines() {
+        int counter = 0;
+        if(this.specifications != null)
+            for(char c : this.specifications.toCharArray())
+                if(c == '\n')
+                    counter++;
+        return counter;
+    }
+
     public AnchorPane initAnchor(){
         AnchorPane anchor = new AnchorPane();
-        labelsYStart = 5;
+        this.labelsYStart = 5;
         Label brand = addLabelWithPos("Brand: " + this.brand);
         Label model = addLabelWithPos("Model: " + this.model);
         Label color = addLabelWithPos("Color: " + this.color);
@@ -67,6 +76,7 @@ public class Transport implements Serializable {
         Label miles = addLabelWithPos("Miles: " + this.mileage);
         Label mass = addLabelWithPos("Mass: " + this.mass);
         Label specifications = addLabelWithPos("Specifications: " + this.specifications);
+        this.labelsYStart += calcSpecificationsNewLines() * labelsDistance;
         anchor.getChildren().addAll(brand, model, color, interior, specifications, seats, year, miles, mass);
         return anchor;
     }

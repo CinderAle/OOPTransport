@@ -57,7 +57,6 @@ public class AirTransport extends Transport {
         controller.airMaxDistanceTextField.setText(Integer.toString(this.maxDistance));
         controller.airMaxHeightTextField.setText(Integer.toString(this.maxHeight));
         if(this.engines != null) {
-            System.out.println(this.engines.length);
             controller.objectEngines = this.engines;
             controller.addEngineAccord();
         }
