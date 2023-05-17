@@ -2,11 +2,9 @@ package com.example.ooptransport.serializer;
 
 import com.example.ooptransport.Transport;
 import com.example.ooptransport.transport.GroundTransport;
-import com.example.ooptransport.transport.PassengerCar;
 import javafx.scene.control.Alert;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -222,17 +220,14 @@ public class TextSerializer implements Serializer {
                     case "String":
                         setters.get(setterName).invoke(instance, value);
                         break;
-                    case "wheelDriveTypes":
-                        setters.get(setterName).invoke(instance, GroundTransport.wheelDriveTypes.valueOf(value));
-                        break;
-                    case "gearboxTypes":
-                        setters.get(setterName).invoke(instance, GroundTransport.gearboxTypes.valueOf(value));
-                        break;
-                    case "bodyTypes":
-                        setters.get(setterName).invoke(instance, PassengerCar.bodyTypes.valueOf(value));
-                        break;
                     default:
-                        j--;
+                        Class<?> unknownType = getters.get(setterName).getReturnType();
+                        if(unknownType.isEnum()) {
+                            Enum<?> enumValue = Enum.valueOf((Class<? extends Enum>) unknownType, value);
+                            setters.get(setterName).invoke(instance, enumValue);
+                        }
+                        else
+                            j--;
                 }
                 j++;
             }
