@@ -21,7 +21,7 @@ public class TextSerializer implements Serializer {
 
     @Override
     public String getName() {
-        return "Text (*.txt)";
+        return "Text";
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.example.ooptransport.transport.*;
 import com.example.ooptransport.transportfactory.TransportFactory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,11 +18,19 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.example.archive.IArchive;
+import org.example.gziparchive.GZipArchive;
+import org.example.ziparchive.ZipArchive;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -79,6 +88,7 @@ public class Controller {
     public Trailer objectTrailer;
     public Accordion enginesAccordion;
     public Accordion objectsAccordion;
+    public Menu pluginsMenuBar;
 
     boolean isChanging = false;
     ArrayList<Transport> allTransport = null;
@@ -120,6 +130,70 @@ public class Controller {
         passengerAssemblyTextField.setText("");
         passengerBodyTypeComboBox.getSelectionModel().select(null);
         truckConnectionTextField.setText("");
+    }
+
+    Map<String, IArchive> initPluginsList() {
+        Map<String, IArchive> pluginsList = new HashMap<>();
+        pluginsList.put("No plugin", null);
+        pluginsList.put("zip", new ZipArchive());
+        pluginsList.put("gzip", new GZipArchive());
+        return pluginsList;
+    }
+
+    void initPluginsMenu() {
+        Map<String, IArchive> pluginsList = initPluginsList();
+        for(Map.Entry<String, IArchive> entry : pluginsList.entrySet()) {
+            MenuItem item = new MenuItem(entry.getKey());
+            IArchive plugin = entry.getValue();
+            item.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    initSerializers();
+                    if(plugin != null) {
+                        FileChooser chooser = new FileChooser();
+                        addPluginExtensionsToFileChooser(chooser, plugin);
+                        File outputFile = chooser.showSaveDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
+                        if(outputFile != null) {
+                            String serializerExtension = "*" + getFirstFileExtension(outputFile);
+                            String extension = serializerExtension + plugin.getExtension();
+                            serializers.get(serializerExtension).serialize(allTransport, outputFile.getPath());
+                            archive(outputFile.getPath(), plugin);
+                        }
+                    }
+                    else
+                        saveListToAFile(actionEvent);
+                }
+            });
+            pluginsMenuBar.getItems().add(item);
+        }
+    }
+
+    void archive(String path, IArchive plugin) {
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            byte[] data = fis.readAllBytes();
+            fis.close();
+            plugin.archive(data, path);
+        }
+        catch(Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Error saving via plugin!");
+        }
+    }
+
+    void unarchive(File inputFile, IArchive plugin) {
+        try {
+            FileInputStream fis = new FileInputStream(inputFile);
+            byte[] data = fis.readAllBytes();
+            fis.close();
+            String extension = plugin.unarchive(inputFile.getPath());
+            deserialize(inputFile, extension);
+            FileOutputStream fos = new FileOutputStream(inputFile);
+            fos.write(data);
+            fos.close();
+        }
+        catch(Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Error opening via plugin!");
+        }
     }
 
     void initSerializers(){
@@ -335,6 +409,21 @@ public class Controller {
             return "";
     }
 
+    String getFirstFileExtension(File file) {
+        int firstExtension = file.getName().indexOf('.');
+        int secondExtension = file.getName().lastIndexOf('.');
+        if(firstExtension > 0 && secondExtension > 0)
+            return file.getName().substring(firstExtension, secondExtension);
+        else
+            return "";
+    }
+
+    void addPluginExtensionsToFileChooser(FileChooser chooser, IArchive plugin) {
+        for(Serializer serializer: serializers.values()) {
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName(), serializer.getExtension() + plugin.getExtension()));
+        }
+    }
+
     void addExtensionsToFileChooser(FileChooser chooser) {
         for(Serializer serializer: serializers.values()) {
             chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName(), serializer.getExtension()));
@@ -344,7 +433,7 @@ public class Controller {
     void saveList(File outputFile){
         if(outputFile != null) {
             String extension = '*' + getFileExtension(outputFile.getPath());
-            if(extension.length() > 0)
+            if(extension.length() > 1)
                 serializers.get(extension).serialize(allTransport, outputFile.getPath());
         }
     }
@@ -365,17 +454,46 @@ public class Controller {
         saveList(outputFile);
     }
 
+    void deserialize(File inputFile, String extension) {
+        extension = "*" + extension;
+        if(extension.length() > 1) {
+            allTransport = serializers.get(extension).deserialize(inputFile.getPath());
+            lastOpenedFile = inputFile;
+            setTransportAccordion();
+        }
+    }
+
+    void addOpenExtensionsToFileChooser(FileChooser chooser, Map<String, IArchive> plugins) {
+        for(Serializer serializer: serializers.values()) {
+            String extensionSet = serializer.getExtension();
+            ArrayList<String> extensionsArr = new ArrayList<>();
+            extensionsArr.add(serializer.getExtension());
+            for(Map.Entry<String, IArchive> plugin : plugins.entrySet())
+                if(plugin.getValue() != null) {
+                    extensionSet += ", " + serializer.getExtension() + plugin.getValue().getExtension();
+                    extensionsArr.add(serializer.getExtension() + plugin.getValue().getExtension());
+                }
+            String[] extensions = extensionsArr.toArray(new String[0]);
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName() + " (" +  extensionSet + ')', extensions));
+        }
+    }
+
     public void getListFromFile(ActionEvent actionEvent) {
         initSerializers();
+        Map<String, IArchive> plugins = initPluginsList();
         FileChooser chooser = new FileChooser();
-        addExtensionsToFileChooser(chooser);
+        addOpenExtensionsToFileChooser(chooser, plugins);
         File inputFile = chooser.showOpenDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
         if(inputFile != null) {
-            String extension = '*' + getFileExtension(inputFile.getPath());
-            if(extension.length() > 0) {
-                allTransport = serializers.get(extension).deserialize(inputFile.getPath());
-                lastOpenedFile = inputFile;
-                setTransportAccordion();
+            for(Map.Entry<String, IArchive> plugin : plugins.entrySet()) {
+                if (plugin.getValue() != null && inputFile.getPath().endsWith(plugin.getValue().getExtension())) {
+                    unarchive(inputFile, plugin.getValue());
+                    break;
+                }
+                else if (plugin.getValue() == null) {
+                    deserialize(inputFile, getFileExtension(inputFile.getPath()));
+                    break;
+                }
             }
         }
     }

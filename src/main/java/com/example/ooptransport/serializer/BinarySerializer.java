@@ -10,7 +10,7 @@ public class BinarySerializer implements Serializer {
 
     @Override
     public String getName() {
-        return "Binary (*.bin)";
+        return "Binary";
     }
 
     @Override

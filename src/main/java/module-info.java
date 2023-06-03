@@ -6,6 +6,9 @@ module com.example.ooptransport {
     requires org.kordamp.bootstrapfx.core;
     requires com.google.gson;
     requires gson.extras;
+    requires Archive;
+    requires ZipArchive;
+    requires GZipArchive;
 
     opens com.example.ooptransport to javafx.fxml, com.google.gson;
     exports com.example.ooptransport;

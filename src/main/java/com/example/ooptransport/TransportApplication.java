@@ -14,6 +14,8 @@ public class TransportApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setTitle("Transport editor");
+        Controller controller = fxmlLoader.getController();
+        controller.initPluginsMenu();
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

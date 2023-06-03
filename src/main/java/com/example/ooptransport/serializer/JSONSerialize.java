@@ -16,7 +16,7 @@ public class JSONSerialize implements Serializer {
             .registerSubtype(PassengerCar.class, "car").registerSubtype(Truck.class, "truck").registerSubtype(Trailer.class, "trailer");
     @Override
     public String getName() {
-        return "JSON (*.json)";
+        return "JSON";
     }
 
     @Override
