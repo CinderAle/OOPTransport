@@ -9,6 +9,7 @@ module com.example.ooptransport {
     requires Archive;
     requires ZipArchive;
     requires GZipArchive;
+    requires JarArchive;
 
     opens com.example.ooptransport to javafx.fxml, com.google.gson;
     exports com.example.ooptransport;

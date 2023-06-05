@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.example.archive.IArchive;
 import org.example.gziparchive.GZipArchive;
+import org.example.jararchive.JarArchive;
 import org.example.ziparchive.ZipArchive;
 
 import java.io.File;
@@ -137,6 +138,7 @@ public class Controller {
         pluginsList.put("No plugin", null);
         pluginsList.put("zip", new ZipArchive());
         pluginsList.put("gzip", new GZipArchive());
+        pluginsList.put("jar", new JarArchive());
         return pluginsList;
     }
 
@@ -176,7 +178,7 @@ public class Controller {
             plugin.archive(data, path);
         }
         catch(Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Error saving via plugin!");
+            new Alert(Alert.AlertType.ERROR, "Error saving via plugin!").show();
         }
     }
 
@@ -192,7 +194,7 @@ public class Controller {
             fos.close();
         }
         catch(Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Error opening via plugin!");
+            new Alert(Alert.AlertType.ERROR, "Error opening via plugin!").show();
         }
     }
 
@@ -420,13 +422,14 @@ public class Controller {
 
     void addPluginExtensionsToFileChooser(FileChooser chooser, IArchive plugin) {
         for(Serializer serializer: serializers.values()) {
-            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName(), serializer.getExtension() + plugin.getExtension()));
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName() + " (" + serializer.getExtension()+plugin.getExtension() + ")",
+                                      serializer.getExtension() + plugin.getExtension()));
         }
     }
 
     void addExtensionsToFileChooser(FileChooser chooser) {
         for(Serializer serializer: serializers.values()) {
-            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName(), serializer.getExtension()));
+            chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializer.getName() + " (" + serializer.getExtension() + ')', serializer.getExtension()));
         }
     }
 
@@ -485,16 +488,16 @@ public class Controller {
         addOpenExtensionsToFileChooser(chooser, plugins);
         File inputFile = chooser.showOpenDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
         if(inputFile != null) {
+            boolean isPlugin = false;
             for(Map.Entry<String, IArchive> plugin : plugins.entrySet()) {
                 if (plugin.getValue() != null && inputFile.getPath().endsWith(plugin.getValue().getExtension())) {
                     unarchive(inputFile, plugin.getValue());
-                    break;
-                }
-                else if (plugin.getValue() == null) {
-                    deserialize(inputFile, getFileExtension(inputFile.getPath()));
+                    isPlugin = true;
                     break;
                 }
             }
+            if(!isPlugin)
+                deserialize(inputFile, getFileExtension(inputFile.getPath()));
         }
     }
 }
