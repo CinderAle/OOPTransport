@@ -19,16 +19,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.example.archive.IArchive;
-import org.example.gziparchive.GZipArchive;
-import org.example.jararchive.JarArchive;
-import org.example.ziparchive.ZipArchive;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,11 +85,11 @@ public class Controller {
     public Accordion enginesAccordion;
     public Accordion objectsAccordion;
     public Menu pluginsMenuBar;
-
     boolean isChanging = false;
     ArrayList<Transport> allTransport = null;
     HashMap<String, Serializer> serializers = new HashMap<>();
     File lastOpenedFile = null;
+    Map<String, IArchive> archivers;
 
     public void clearAllFields(){
         brandTextBox.setText("");
@@ -133,18 +128,9 @@ public class Controller {
         truckConnectionTextField.setText("");
     }
 
-    Map<String, IArchive> initPluginsList() {
-        Map<String, IArchive> pluginsList = new HashMap<>();
-        pluginsList.put("No plugin", null);
-        pluginsList.put("zip", new ZipArchive());
-        pluginsList.put("gzip", new GZipArchive());
-        pluginsList.put("jar", new JarArchive());
-        return pluginsList;
-    }
-
     void initPluginsMenu() {
-        Map<String, IArchive> pluginsList = initPluginsList();
-        for(Map.Entry<String, IArchive> entry : pluginsList.entrySet()) {
+        initArchivers();
+        for(Map.Entry<String, IArchive> entry : archivers.entrySet()) {
             MenuItem item = new MenuItem(entry.getKey());
             IArchive plugin = entry.getValue();
             item.setOnAction(new EventHandler<ActionEvent>() {
@@ -157,7 +143,7 @@ public class Controller {
                         File outputFile = chooser.showSaveDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
                         if(outputFile != null) {
                             String serializerExtension = "*" + getFirstFileExtension(outputFile);
-                            String extension = serializerExtension + plugin.getExtension();
+                            //String extension = serializerExtension + plugin.getExtension();
                             serializers.get(serializerExtension).serialize(allTransport, outputFile.getPath());
                             archive(outputFile.getPath(), plugin);
                         }
@@ -167,6 +153,30 @@ public class Controller {
                 }
             });
             pluginsMenuBar.getItems().add(item);
+        }
+    }
+    private IArchive getArchiver(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+//        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { pluginFile.toURI().toURL() });
+        ClassLoader classLoader = Controller.class.getClassLoader();
+        Class<?> pluginClass = classLoader.loadClass(classname);
+        IArchive archive = (IArchive) pluginClass.newInstance();
+        return archive;
+    }
+    private void initArchivers() {
+        final String PREFIX = "org.example.";
+        archivers = new HashMap<>();
+        File pluginsFolder = new File("src\\main\\java\\com\\example\\ooptransport\\plugins");
+        File[] pluginFiles = pluginsFolder.listFiles((dir, name) -> name.endsWith(".jar"));
+        for (File file: pluginFiles) {
+            String className = file.getName().substring(0, file.getName().lastIndexOf('.'));
+            try {
+                System.out.println(PREFIX + className.toLowerCase() + "." + className);
+                IArchive archiver = getArchiver(PREFIX + className.toLowerCase() + "." + className);
+                archivers.put(className, archiver);
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "There are no archivers in directory").show();
+                break;
+            }
         }
     }
 
@@ -443,10 +453,10 @@ public class Controller {
 
     public void saveListToTheFile(ActionEvent actionEvent) {
         initSerializers();
-        if(lastOpenedFile != null)
-            saveList(lastOpenedFile);
-        else
-            saveListToAFile(actionEvent);
+        FileChooser chooser = new FileChooser();
+        addExtensionsToFileChooser(chooser);
+        File outputFile = chooser.showSaveDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
+        saveList(outputFile);
     }
 
     public void saveListToAFile(ActionEvent actionEvent) {
@@ -483,13 +493,13 @@ public class Controller {
 
     public void getListFromFile(ActionEvent actionEvent) {
         initSerializers();
-        Map<String, IArchive> plugins = initPluginsList();
+        //Map<String, IArchive> plugins = initPluginsList();
         FileChooser chooser = new FileChooser();
-        addOpenExtensionsToFileChooser(chooser, plugins);
+        addOpenExtensionsToFileChooser(chooser, archivers);
         File inputFile = chooser.showOpenDialog(vehicleTypeComboBox.getParent().getScene().getWindow());
         if(inputFile != null) {
             boolean isPlugin = false;
-            for(Map.Entry<String, IArchive> plugin : plugins.entrySet()) {
+            for(Map.Entry<String, IArchive> plugin : archivers.entrySet()) {
                 if (plugin.getValue() != null && inputFile.getPath().endsWith(plugin.getValue().getExtension())) {
                     unarchive(inputFile, plugin.getValue());
                     isPlugin = true;
